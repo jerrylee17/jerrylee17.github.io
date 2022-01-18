@@ -1,0 +1,236 @@
+body {
+  margin: 0;
+}
+.navbar {
+  height: 8vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  z-index: 5;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.navbar li {
+  color: #5f5f5f;
+  float: right;
+  padding: 3vh 2vw;
+}
+
+.navbar li:first-child {
+  color: #af9454;
+  padding-left: 10vw;
+  float: left;
+}
+
+.navbar li:nth-child(6) {
+  color: #867650;
+}
+
+.navbar li:nth-child(2) {
+  padding-right: 5vw;
+}
+
+.navbar a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.section-1 {
+  padding-top: 8vh;
+  height: 80vh;
+  line-height: 60vh;
+  text-align: center;
+  background-image: url("https://csci571.com/hw/hw3/images/image3.png");
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.section-1 h1 {
+  font-family: "Josefin Slab";
+  font-size: 48px;
+  font-weight: normal;
+  letter-spacing: 7px;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1.5;
+  color: white;
+}
+
+.section-2 {
+  position: relative;
+  height: 60vh;
+}
+
+/* Positioning of flower tab */
+.banner {
+  position: absolute;
+  background-image: url("https://csci571.com/hw/hw3/images/flower.png");
+  background-position: center;
+  background-color: #af9453; /* Put this here just in case image cuts out */
+  color: white;
+  margin: 6vh 7vw;
+  height: 50vh;
+  width: 25vw;
+  text-align: center;
+}
+
+/* SERVICES */
+.banner h4 {
+  padding-top: 7vh;
+  padding-bottom: 8vh;
+  line-height: 20vh;
+  font-family: "Josefin Slab";
+  font-size: 24px;
+  font-weight: normal;
+  letter-spacing: 7px;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1.5;
+}
+
+/* Turn the dream into a reality */
+.banner p {
+  line-height: 20vh;
+  font-family: "Josefin Slab";
+  font-size: 18px;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1.5;
+  padding-bottom: 4vh;
+}
+
+/* DISCOVER */
+.discover {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  height: 4vh;
+  line-height: 4vh;
+  width: 15vw;
+  text-align: center;
+  display: inline-block;
+  border: 1px solid white;
+  color: white;
+}
+
+.discover p {
+  vertical-align: middle;
+}
+
+.section-2 .image {
+  position: absolute;
+  margin: 6vh 7vw;
+  left: 35vw;
+  right: 0;
+  height: 50vh;
+  overflow: hidden;
+}
+
+.section-3 {
+  position: relative;
+  padding-top: 4vh;
+  height: 40vh;
+}
+
+.section-3 .arrow-left {
+  position: absolute;
+  left: 0vw;
+  height: 30vh;
+  width: 20vw;
+  margin: 6vh 4vw;
+  color: #af9453;
+  text-align: center;
+  line-height: 2;
+}
+
+.section-3 .testimonial {
+  position: absolute;
+  left: 30vw;
+  height: 30vh;
+  width: 50vw;
+  text-align: center;
+}
+
+.section-3 .arrow-right {
+  position: absolute;
+  right: 0vw;
+  height: 30vh;
+  width: 20vw;
+  margin: 6vh 4vw;
+  color: #af9453;
+  text-align: center;
+  line-height: 2;
+}
+
+.section-3 .testimonial .text {
+  font-weight: normal;
+  font-family: "Josefin Slab";
+  line-height: 1.4;
+}
+
+.section-3 .testimonial .footer {
+  text-align: center;
+  color: #af9453;
+}
+
+.section-4 {
+  margin: 6vh 7vw;
+  position: relative;
+  height: 70vh;
+  background-image: url("https://csci571.com/hw/hw3/images/image2.png");
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.section-4 .banner {
+  right: 0;
+}
+
+.section-5 {
+  margin: 15vh 7vw 5vh 7vw;
+  background-color: #af9453;
+  height: 20vh;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  color: white;
+}
+
+.section-5 .footer {
+  margin: 5vh 1vw auto 1vw;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.section-5 > #address {
+  margin-left: 10vw;
+}
+
+.section-5 > #consultation {
+  margin-right: 10vw;
+}
+
+.section-5 > #phone {
+  height: 7vh;
+  padding-left: 1vw;
+  border-left: 1px solid white;
+  border-right: 1px solid white;
+}
+
+.section-5 .discover-wrapper {
+  margin: auto;
+  flex-grow: 2;
+  text-align: center;
+  line-height: 20vh;
+}
+
+.section-5 .discover {
+    vertical-align: middle;
+}

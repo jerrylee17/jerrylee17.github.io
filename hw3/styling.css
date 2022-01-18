@@ -67,6 +67,7 @@ body {
 .section-2 {
   position: relative;
   height: 60vh;
+  padding-top: 2vh;
 }
 
 /* Positioning of flower tab */
@@ -77,31 +78,28 @@ body {
   background-color: #af9453; /* Put this here just in case image cuts out */
   color: white;
   margin: 6vh 7vw;
-  height: 50vh;
-  width: 25vw;
+  height: 47vh;
+  width: 29vw;
   text-align: center;
 }
 
 /* SERVICES */
 .banner h4 {
   padding-top: 7vh;
-  padding-bottom: 8vh;
-  line-height: 20vh;
+  padding-bottom: 4vh;
   font-family: "Josefin Slab";
-  font-size: 24px;
-  font-weight: normal;
-  letter-spacing: 7px;
+  font-size: 30px;
+  letter-spacing: 10px;
   display: inline-block;
   vertical-align: middle;
-  line-height: 1.5;
 }
 
 /* Turn the dream into a reality */
 .banner p {
-  line-height: 20vh;
   font-family: "Josefin Slab";
-  font-size: 18px;
+  font-size: 24px;
   display: inline-block;
+  letter-spacing: 1px;
   vertical-align: middle;
   line-height: 1.5;
   padding-bottom: 4vh;
@@ -123,16 +121,16 @@ body {
   vertical-align: middle;
 }
 
-.section-2 .image {
+.section-2 img {
   position: absolute;
   margin: 6vh 7vw;
-  left: 35vw;
   right: 0;
-  height: 50vh;
+  height: 47vh;
   overflow: hidden;
 }
 
 .section-3 {
+  font-size: 24px;
   position: relative;
   padding-top: 4vh;
   height: 40vh;
@@ -143,7 +141,7 @@ body {
   left: 0vw;
   height: 30vh;
   width: 20vw;
-  margin: 6vh 4vw;
+  margin: 6vh 0vw;
   color: #af9453;
   text-align: center;
   line-height: 2;
@@ -151,7 +149,7 @@ body {
 
 .section-3 .testimonial {
   position: absolute;
-  left: 30vw;
+  left: 25vw;
   height: 30vh;
   width: 50vw;
   text-align: center;
@@ -162,14 +160,14 @@ body {
   right: 0vw;
   height: 30vh;
   width: 20vw;
-  margin: 6vh 4vw;
+  margin: 6vh 0vw;
   color: #af9453;
   text-align: center;
   line-height: 2;
 }
 
 .section-3 .testimonial .text {
-  font-weight: normal;
+  /* font-weight: normal; */
   font-family: "Josefin Slab";
   line-height: 1.4;
 }
@@ -180,11 +178,13 @@ body {
 }
 
 .section-4 {
-  margin: 6vh 7vw;
+  margin: 4vh 7vw 6vh 7vw;
   position: relative;
-  height: 70vh;
+  height: 60vh;
   background-image: url("https://csci571.com/hw/hw3/images/image2.png");
-  background-position: center;
+  background-position: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
   background-attachment: fixed;
 }
 
@@ -193,7 +193,7 @@ body {
 }
 
 .section-5 {
-  margin: 15vh 7vw 5vh 7vw;
+  margin: 10vh 7vw 5vh 7vw;
   background-color: #af9453;
   height: 20vh;
   left: 0;

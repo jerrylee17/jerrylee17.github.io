@@ -1,5 +1,7 @@
 body {
   margin: 0;
+  max-width: 1400px;
+  max-height: 1265px;
 }
 .navbar {
   height: 8vh;

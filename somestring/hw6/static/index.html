@@ -150,7 +150,35 @@
       // Create the chart
       Highcharts.stockChart("container", {
         rangeSelector: {
-          selected: 1,
+          buttons: [
+            {
+              type: "day",
+              count: 7,
+              text: "7d"
+            },
+            {
+              type: "day",
+              count: 15,
+              text: "15d"
+            },
+            {
+              type: "month",
+              count: 1,
+              text: "1m"
+            },
+            {
+              type: "month",
+              count: 3,
+              text: "3m"
+            },
+            {
+              type: "month",
+              count: 6,
+              text: "6m"
+            },
+          ],
+          selected: 5,
+          inputEnabled: false
         },
 
         title: {
@@ -246,11 +274,11 @@
       $("#s4").html(e.opening_price);
       $("#s5").html(e.high_price);
       $("#s6").html(e.low_price);
-      $("#b2").html(e.strong_buy != undefined ? e.strong_buy : "N/A");
-      $("#b3").html(e.buy != undefined ? e.buy : "N/A");
+      $("#b2").html(e.strong_buy != undefined ? e.strong_sell : "N/A");
+      $("#b3").html(e.buy != undefined ? e.sell : "N/A");
       $("#b4").html(e.hold != undefined ? e.hold : "N/A");
-      $("#b5").html(e.sell != undefined ? e.sell : "N/A");
-      $("#b6").html(e.strong_sell != undefined ? e.strong_sell : "N/A");
+      $("#b5").html(e.sell != undefined ? e.buy : "N/A");
+      $("#b6").html(e.strong_sell != undefined ? e.strong_buy : "N/A");
       var up_arrow =
         ' <img src="../static/images/GreenArrowUp.png" class="arrows" />';
       var down_arrow =
@@ -316,6 +344,9 @@
     $("#reset").click(function () {
       $("#text").val("");
       $(".section-4").hide();
+      $(".section-2").hide();
+      hide_all();
+      $("#latest-news").html("");
     });
     $("#stock-search-form").submit(async function (e) {
       e.preventDefault();

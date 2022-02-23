@@ -302,9 +302,13 @@
     function hide_all() {
       $(".section-4").hide();
       $("#company").hide();
+      $("#company-tab").css('background-color', '#f8f9fa')
       $("#stock-summary").hide();
+      $("#stock-summary-tab").css('background-color', '#f8f9fa')
       $("#charts").hide();
+      $("#charts-tab").css('background-color', '#f8f9fa')
       $("#latest-news").hide();
+      $("#latest-news-tab").css('background-color', '#f8f9fa')
     }
     async function api_call(url, opened_tab) {
       $.ajax({
@@ -320,12 +324,12 @@
               $(".section-4").show();
               return;
             }
-            console.log(`opened_tab: ${opened_tab}`);
             if (opened_tab == false){
               hide_all();
               $(".section-4").hide();
               $(".section-2").show(); // show tabs
               $("#company").show();
+              $("#company-tab").css('background-color', '#b4b4b4')
             }
           }
           // Populating fields
@@ -371,6 +375,8 @@
       hide_all();
       var name = "#" + e.target.id.slice(0, -4);
       $(name).show();
+      var tabname = "#" + e.target.id;
+      $(tabname).css('background-color', '#b4b4b4')
     });
   </script>
 </html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="../static/styling.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+  </head>
+  <body>
+    <h2 id="stock-search-title">Stock search</h2>
+    <div class="section-1">
+      <form id="stock-search-form" method="GET">
+        <button class="search-bar" id="search" type="submit">
+          <img class="search-icon" src="../static/images/search-solid.svg" />
+        </button>
+        <input
+          type="text"
+          class="search-bar"
+          id="text"
+          required="true"
+          placeholder="Enter Stock Ticker Symbol"
+        />
+        <button class="search-bar" id="reset" type="button">
+          <img class="search-icon" src="../static/images/times-solid.svg" />
+        </button>
+      </form>
+    </div>
+    <div class="section-2" hidden>
+      <ul id="tabs">
+        <li class="tab" id="company-tab">Company</li>
+        <li class="tab" id="stock-summary-tab">Stock Summary</li>
+        <li class="tab" id="charts-tab">Charts</li>
+        <li class="tab" id="latest-news-tab">Latest News</li>
+        <li id="padding"></li>
+      </ul>
+    </div>
+    <div class="section-center">
+      <div class="section-3" id="company" hidden>
+        <table id="company-info">
+          <tr>
+            <th colspan="2">
+              <img id="company-logo" src="" />
+            </th>
+          </tr>
+          <tr>
+            <th>Company Name</th>
+            <td id="company-name">1</td>
+          </tr>
+          <tr>
+            <th>Stock Ticker Symbol</th>
+            <td id="stock-ticker-symbol">2</td>
+          </tr>
+          <tr>
+            <th>Stock Exchange Code</th>
+            <td id="stock-exchange-code">3</td>
+          </tr>
+          <tr>
+            <th>Company Start Date</th>
+            <td id="company-start-date">4</td>
+          </tr>
+          <tr>
+            <th>Category</th>
+            <td id="category">5</td>
+          </tr>
+        </table>
+      </div>
+      <div class="section-3" id="stock-summary" hidden>
+        <table id="stock-summary-table">
+          <tr>
+            <th>Stock Ticker Symbol</th>
+            <td id="s1">0</td>
+          </tr>
+          <tr>
+            <th>Trading Day</th>
+            <td id="s2">0</td>
+          </tr>
+          <tr>
+            <th>Previous Closing Price</th>
+            <td id="s3">0</td>
+          </tr>
+          <tr>
+            <th>Opening Price</th>
+            <td id="s4">0</td>
+          </tr>
+          <tr>
+            <th>High Price</th>
+            <td id="s5">0</td>
+          </tr>
+          <tr>
+            <th>Low Price</th>
+            <td id="s6">0</td>
+          </tr>
+          <tr>
+            <th>Change</th>
+            <td id="s7">0</td>
+          </tr>
+          <tr>
+            <th>Change Percent</th>
+            <td id="s8">0</td>
+          </tr>
+          <tr>
+            <td
+              class="recommendations-display"
+              id="recommendations-wrapper"
+              colspan="2"
+            >
+              <div id="recommendations">
+                <div class="recommendation-box" id="b1">
+                  Strong <br />
+                  Sell
+                </div>
+                <div class="recommendation-box" id="b2">0</div>
+                <div class="recommendation-box" id="b3">0</div>
+                <div class="recommendation-box" id="b4">0</div>
+                <div class="recommendation-box" id="b5">0</div>
+                <div class="recommendation-box" id="b6">0</div>
+                <div class="recommendation-box" id="b7">
+                  Strong <br />
+                  Buy
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="recommendations-display"
+              id="recommendation-trends"
+              colspan="2"
+            >
+              Recommendation Trends
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="section-3" id="charts" hidden>
+        <div id="container"></div>
+      </div>
+      <div class="section-3" id="latest-news" hidden>
+      </div>
+      <div class="section-4" hidden>
+        Error: No record has been found, please enter a valid symbol
+      </div>
+    </div>
+  </body>
+  <script>
+    function update_charts(e) {
+      // Create the chart
+      Highcharts.stockChart("container", {
+        rangeSelector: {
+          selected: 1,
+        },
+
+        title: {
+          text: e.title,
+        },
+
+        subtitle: {
+          text: "<a href='https://finnhub.io/' style='text-decoration: underline' target='_blank'> Source: Finnhub </a>"
+        },
+
+        yAxis: [
+          {
+            opposite: false,
+            labels: {
+              align: "right",
+              x: -10,
+            },
+            title: {
+              text: "Stock Price"
+            },
+            resize: {
+              enabled: true,
+            },
+          }, {
+            opposite: true,
+            labels: {
+              align: "left",
+              x: 10,
+            },
+            title: {
+              text: "Volume"
+            },
+          }
+        ],
+
+        series: [
+          {
+            name: "Stock Price",
+            data: e.price_date,
+            type: "area",
+            threshold: null,
+            tooltip: {
+              valueDecimals: 2,
+            },
+            fillColor: {
+              linearGradient: {
+                x1: 0,
+                y1: 0,
+                x2: 0,
+                y2: 1,
+              },
+              stops: [
+                [0, Highcharts.getOptions().colors[0]],
+                [
+                  1,
+                  Highcharts.color(Highcharts.getOptions().colors[0])
+                    .setOpacity(0)
+                    .get("rgba"),
+                ],
+              ],
+            },
+          },
+          {
+            type: 'column',
+            name: 'Volume',
+            data: e.volume_date,
+            yAxis: 1
+          }
+        ],
+      });
+    }
+    function update_latest_news(e) {
+      for (var i = 0; i < e.news.length; i++){
+        var newElement = `
+          <div class="news">
+            <div class="news-image-wrapper">
+              <img class="news-image" src="${e.news[i].image}" >
+            </div>
+            <div class="news-text">
+              <p class="title">${e.news[i].title}</p>
+              <p class="date">${e.news[i].date}</p>
+              <a class="original" href="${e.news[i].link_to_original_post}" target="_blank">See Original Post</a>
+            </div>
+          </div>
+          `
+        $("#latest-news").append(newElement)
+      }
+    }
+    function update_stock_summary(e) {
+      $("#s1").html(e.stock_ticker_symbol);
+      $("#s2").html(e.trading_day);
+      $("#s3").html(e.previous_closing_price);
+      $("#s4").html(e.opening_price);
+      $("#s5").html(e.high_price);
+      $("#s6").html(e.low_price);
+      $("#b2").html(e.strong_buy != undefined ? e.strong_buy : "N/A");
+      $("#b3").html(e.buy != undefined ? e.buy : "N/A");
+      $("#b4").html(e.hold != undefined ? e.hold : "N/A");
+      $("#b5").html(e.sell != undefined ? e.sell : "N/A");
+      $("#b6").html(e.strong_sell != undefined ? e.strong_sell : "N/A");
+      var up_arrow =
+        ' <img src="../static/images/GreenArrowUp.png" class="arrows" />';
+      var down_arrow =
+        ' <img src="../static/images/RedArrowDown.png" class="arrows" />';
+      if (e.change > 0) {
+        $("#s7").html(String(e.change) + up_arrow);
+        $("#s8").html(String(e.change_percent) + up_arrow);
+      } else if (e.change < 0) {
+        $("#s7").html(String(e.change) + down_arrow);
+        $("#s8").html(String(e.change_percent) + down_arrow);
+      }
+    }
+    function update_company(e) {
+      $("#company-logo").attr("src", e.company_logo);
+      $("#company-name").html(e.company_name);
+      $("#stock-ticker-symbol").html(e.stock_ticker_symbol);
+      $("#stock-exchange-code").html(e.stock_exchange_code);
+      $("#company-start-date").html(e.company_start_date);
+      $("#category").html(e.category);
+    }
+    function hide_all() {
+      $(".section-4").hide();
+      $("#company").hide();
+      $("#stock-summary").hide();
+      $("#charts").hide();
+      $("#latest-news").hide();
+    }
+    async function api_call(url, opened_tab) {
+      $.ajax({
+        type: "GET",
+        url: url,
+        data: { stock_name: $("#text").val() },
+        success: function (e) {
+          // Displaying the tabs and stuff
+          if (url == "/get_company_tab") {
+            if (e.error) {
+              hide_all();
+              $(".section-2").hide();
+              $(".section-4").show();
+              return;
+            }
+            console.log(`opened_tab: ${opened_tab}`);
+            if (opened_tab == false){
+              hide_all();
+              $(".section-4").hide();
+              $(".section-2").show(); // show tabs
+              $("#company").show();
+            }
+          }
+          // Populating fields
+          if (url == "/get_company_tab") {
+            update_company(e);
+          } else if (url == "/get_stock_summary_tab") {
+            update_stock_summary(e);
+          } else if (url == "/get_stock_charts_tab") {
+            update_charts(e);
+          } else if (url == "/get_latest_news_tab") {
+            update_latest_news(e);
+          }
+        },
+      });
+    }
+    $("#reset").click(function () {
+      $("#text").val("");
+      $(".section-4").hide();
+    });
+    $("#stock-search-form").submit(async function (e) {
+      e.preventDefault();
+      $("#latest-news").html("");
+      var opened_tab = false;
+      if (!$("#company").is(':hidden')){
+        opened_tab = true;
+      } else if (!$("#stock-summary").is(':hidden')){
+        opened_tab = true;
+      } else if (!$("#charts").is(':hidden')){
+        opened_tab = true;
+      } else if (!$("#latest-news").is(':hidden')){
+        opened_tab = true;
+      }
+      console.log(opened_tab);
+      api_call("/get_company_tab", opened_tab);
+      api_call("/get_stock_summary_tab", opened_tab);
+      api_call("/get_stock_charts_tab", opened_tab);
+      api_call("/get_latest_news_tab", opened_tab);
+    });
+    $(".tab").click(function (e) {
+      hide_all();
+      var name = "#" + e.target.id.slice(0, -4);
+      $(name).show();
+    });
+  </script>
+</html>

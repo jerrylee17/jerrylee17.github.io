@@ -1,0 +1,8 @@
+# Homework 5 sample
+hw5/python-docs-samples/
+
+# Virtual environments
+env/
+
+## pycache
+__pycache__/

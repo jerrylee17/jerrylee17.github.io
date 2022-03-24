@@ -1,0 +1,28 @@
+.stock-search-header {
+    padding: 40px;
+    font-size: 40px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+}
+
+#stock-search-buttons {
+    border: 4px solid #1f1fa2;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 100%;
+    width: 60%;
+    max-width: 580px;
+}
+
+#stock-search-input-text {
+    outline: none;
+    box-shadow: none;
+    user-select: none;
+}
+
+.btn {
+    outline: none;
+    user-select: none;
+    box-shadow: none;
+}
+

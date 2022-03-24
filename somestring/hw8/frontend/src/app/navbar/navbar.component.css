@@ -1,0 +1,12 @@
+.navbar {
+    background-color: #1f1fa2 !important;
+}
+
+.navbar-brand {
+    color: white;
+}
+
+.nav-item:not(:first-child) .active {
+    border: 2px solid white;
+    border-radius: 15px;
+}

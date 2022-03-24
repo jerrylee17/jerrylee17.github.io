@@ -1,0 +1,29 @@
+.posChange {
+    color: green;
+}
+
+.negChange{
+    color: red;
+}
+
+.logo {
+    max-height: 125px;
+}
+
+strong {
+    display:inline !important;
+}
+
+.url-text {
+    text-decoration: none;
+}
+
+.about-the-company {
+    text-decoration: underline;
+}
+
+.smallchart {
+    width: 100%;
+    height: 400px;
+    display: block;
+}

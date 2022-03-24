@@ -247,3 +247,7 @@ body {
     line-height: 50px;
     text-align: center;
 }
+
+.selected-tab {
+    background-color: #909090;
+}

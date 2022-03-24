@@ -138,8 +138,7 @@
       <div class="section-3" id="charts" hidden>
         <div id="container"></div>
       </div>
-      <div class="section-3" id="latest-news" hidden>
-      </div>
+      <div class="section-3" id="latest-news" hidden></div>
       <div class="section-4" hidden>
         Error: No record has been found, please enter a valid symbol
       </div>
@@ -149,36 +148,41 @@
     function update_charts(e) {
       // Create the chart
       Highcharts.stockChart("container", {
+        plotOptions: {
+          column: {
+            pointWidth: 4,
+          },
+        },
         rangeSelector: {
           buttons: [
             {
               type: "day",
               count: 7,
-              text: "7d"
+              text: "7d",
             },
             {
               type: "day",
               count: 15,
-              text: "15d"
+              text: "15d",
             },
             {
               type: "month",
               count: 1,
-              text: "1m"
+              text: "1m",
             },
             {
               type: "month",
               count: 3,
-              text: "3m"
+              text: "3m",
             },
             {
               type: "month",
               count: 6,
-              text: "6m"
+              text: "6m",
             },
           ],
           selected: 5,
-          inputEnabled: false
+          inputEnabled: false,
         },
 
         title: {
@@ -186,7 +190,7 @@
         },
 
         subtitle: {
-          text: "<a href='https://finnhub.io/' style='text-decoration: underline' target='_blank'> Source: Finnhub </a>"
+          text: "<a href='https://finnhub.io/' style='text-decoration: underline' target='_blank'> Source: Finnhub </a>",
         },
 
         yAxis: [
@@ -197,21 +201,22 @@
               x: -10,
             },
             title: {
-              text: "Stock Price"
+              text: "Stock Price",
             },
             resize: {
               enabled: true,
             },
-          }, {
+          },
+          {
             opposite: true,
             labels: {
               align: "left",
               x: 10,
             },
             title: {
-              text: "Volume"
+              text: "Volume",
             },
-          }
+          },
         ],
 
         series: [
@@ -242,16 +247,16 @@
             },
           },
           {
-            type: 'column',
-            name: 'Volume',
+            type: "column",
+            name: "Volume",
             data: e.volume_date,
-            yAxis: 1
-          }
+            yAxis: 1,
+          },
         ],
       });
     }
     function update_latest_news(e) {
-      for (var i = 0; i < e.news.length; i++){
+      for (var i = 0; i < e.news.length; i++) {
         var newElement = `
           <div class="news">
             <div class="news-image-wrapper">
@@ -263,8 +268,8 @@
               <a class="original" href="${e.news[i].link_to_original_post}" target="_blank">See Original Post</a>
             </div>
           </div>
-          `
-        $("#latest-news").append(newElement)
+          `;
+        $("#latest-news").append(newElement);
       }
     }
     function update_stock_summary(e) {
@@ -302,13 +307,13 @@
     function hide_all() {
       $(".section-4").hide();
       $("#company").hide();
-      $("#company-tab").css('background-color', '#f8f9fa')
+      $("#company-tab").removeClass("selected-tab");
       $("#stock-summary").hide();
-      $("#stock-summary-tab").css('background-color', '#f8f9fa')
+      $("#stock-summary-tab").removeClass("selected-tab");
       $("#charts").hide();
-      $("#charts-tab").css('background-color', '#f8f9fa')
+      $("#charts-tab").removeClass("selected-tab");
       $("#latest-news").hide();
-      $("#latest-news-tab").css('background-color', '#f8f9fa')
+      $("#latest-news-tab").removeClass("selected-tab");
     }
     async function api_call(url, opened_tab) {
       $.ajax({
@@ -324,12 +329,12 @@
               $(".section-4").show();
               return;
             }
-            if (opened_tab == false){
+            if (opened_tab == false) {
               hide_all();
               $(".section-4").hide();
               $(".section-2").show(); // show tabs
               $("#company").show();
-              $("#company-tab").css('background-color', '#b4b4b4')
+              $("#company-tab").addClass("selected-tab");
             }
           }
           // Populating fields
@@ -356,13 +361,13 @@
       e.preventDefault();
       $("#latest-news").html("");
       var opened_tab = false;
-      if (!$("#company").is(':hidden')){
+      if (!$("#company").is(":hidden")) {
         opened_tab = true;
-      } else if (!$("#stock-summary").is(':hidden')){
+      } else if (!$("#stock-summary").is(":hidden")) {
         opened_tab = true;
-      } else if (!$("#charts").is(':hidden')){
+      } else if (!$("#charts").is(":hidden")) {
         opened_tab = true;
-      } else if (!$("#latest-news").is(':hidden')){
+      } else if (!$("#latest-news").is(":hidden")) {
         opened_tab = true;
       }
       console.log(opened_tab);
@@ -376,7 +381,7 @@
       var name = "#" + e.target.id.slice(0, -4);
       $(name).show();
       var tabname = "#" + e.target.id;
-      $(tabname).css('background-color', '#b4b4b4')
+      $(tabname).addClass("selected-tab");
     });
   </script>
 </html>

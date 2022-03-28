@@ -11,11 +11,10 @@ const API_KEY = process.env.API_KEY;
 app.use(bodyParser.json());
 app.use(cors());
 
-
 // 4.1.1
 app.get("/getCompanyDescription", async (req, res) => {
   let { ticker } = req.query;
-  if (ticker){
+  if (ticker) {
     ticker = ticker.toUpperCase();
   }
   const url = `https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${API_KEY}`;
@@ -63,7 +62,7 @@ app.get("/getHistoricalData", async (req, res) => {
 // 4.1.3
 app.get("/getLatestPrice", async (req, res) => {
   let { ticker } = req.query;
-  if (ticker){
+  if (ticker) {
     ticker = ticker.toUpperCase();
   }
   const url = `https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${API_KEY}`;
@@ -95,15 +94,14 @@ app.get("/autocomplete", async (req, res) => {
   await axios
     .get(url)
     .then((res) => {
-      response = res.data.result
-        .map((res) => {
-          const data = {
-            description: res.description,
-            displaySymbol: res.displaySymbol,
-          };
-          // return `${data.displaySymbol} | ${data.description}`;
-          return data;
-        });
+      response = res.data.result.map((res) => {
+        const data = {
+          description: res.description,
+          displaySymbol: res.displaySymbol,
+        };
+        // return `${data.displaySymbol} | ${data.description}`;
+        return data;
+      });
     })
     .catch((err) => {
       response.data = err;
@@ -121,7 +119,17 @@ app.get("/getCompanyNews", async (req, res) => {
   await axios
     .get(url)
     .then((res) => {
-      response = res.data;
+      response = res.data
+        .filter(
+          (news) =>
+            news.source &&
+            news.datetime &&
+            news.headline &&
+            news.summary &&
+            news.url &&
+            news.image
+        )
+        .slice(0, 20);
     })
     .catch((err) => {
       response.data = err;

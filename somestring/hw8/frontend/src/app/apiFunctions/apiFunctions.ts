@@ -5,6 +5,7 @@ import { latestPrice } from '../interfaces/latestPrice';
 import { companyDescription } from '../interfaces/companyDescription';
 import { historicalData } from '../interfaces/historicalData'
 import { Autocomplete } from '../interfaces/autocomplete';
+import { companyNews } from '../interfaces/companyNews';
 
 const HOST = 'http://localhost:3000';
 
@@ -16,6 +17,7 @@ export class APIService {
   private latestPrice = HOST + '/getLatestPrice';
   private companyDescription = HOST + '/getCompanyDescription';
   private historicalData = HOST + '/getHistoricalData';
+  private companyNews = HOST + '/getCompanyNews';
 
   constructor(private http: HttpClient) {}
 
@@ -37,6 +39,11 @@ export class APIService {
   fetchHistoricalData(ticker, timeInterval, fromTimestamp, toTimestamp): Observable<historicalData> {
     const url = `${this.historicalData}?ticker=${ticker}&timeInterval=${timeInterval}&fromTimestamp=${fromTimestamp}&toTimestamp=${toTimestamp}`;
     return this.http.get<historicalData>(url);
+  }
+
+  fetchCompanyNews(ticker, fromDate, toDate): Observable<companyNews[]> {
+    const url = `${this.companyNews}?ticker=${ticker}&fromDate=${fromDate}&toDate=${toDate}`;    
+    return this.http.get<companyNews[]>(url);
   }
 }
 

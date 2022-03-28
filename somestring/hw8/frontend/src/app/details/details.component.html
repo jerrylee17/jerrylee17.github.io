@@ -1,12 +1,25 @@
 <app-home></app-home>
 
 <mat-spinner
-  *ngIf="!companyDescription || !ticker || !latestPrice || !chartDone"
+  *ngIf="
+    !companyDescription ||
+    !ticker ||
+    !latestPrice ||
+    !smallChartDone ||
+    !companyNews ||
+    !bigChartDone
+  "
   class="mx-auto mt-5"
 >
 </mat-spinner>
 <div
-  *ngIf="companyDescription && ticker && latestPrice && chartDone"
+  *ngIf="
+    companyDescription &&
+    ticker &&
+    latestPrice &&
+    smallChartDone &&
+    bigChartDone
+  "
   class="details-wrapper container p-5 mb-5"
 >
   <!-- Top info part -->
@@ -117,7 +130,7 @@
         *ngIf="!marketOpen"
         class="border-0 pb-3 d-inline-flex justify-content-center text-danger"
       >
-        Market closed on {{ marketLastTimestamp  }}
+        Market closed on {{ marketLastTimestamp }}
       </b>
     </div>
   </div>
@@ -155,7 +168,9 @@
 
             <!-- About the company -->
             <div class="row mt-5">
-              <h2 class="row mt-1 pb-5 mx-auto justify-content-center about-the-company">
+              <h2
+                class="row mt-1 pb-5 mx-auto justify-content-center about-the-company"
+              >
                 About the Company
               </h2>
             </div>
@@ -179,15 +194,16 @@
               >
             </p>
             <p class="row">
-              <span> <strong> Company Peers: </strong>
-              PEEEERs
+              <span>
+                <strong> Company Peers: </strong>
+                PEEEERs
               </span>
             </p>
           </div>
           <div class="col-sm">
             <highcharts-chart
-              [Highcharts] = "HighCharts"
-              [options] = "smallChartOptions"
+              [Highcharts]="HighCharts"
+              [options]="smallChartOptions"
               class="smallchart"
             >
             </highcharts-chart>
@@ -197,12 +213,75 @@
     </mat-tab>
 
     <!-- top news tab -->
-    <mat-tab label="Top News"> </mat-tab>
+    <mat-tab label="Top News">
+      <div class="container">
+        <div class="row p-1" *ngIf="companyNews">
+          <div
+            class="card p-0 my-3 mx-auto col-sm-4 news-card"
+            *ngFor="let news of companyNews"
+          >
+            <div class="card-body row">
+              <div class="p-0 my-auto mx-1 col-md-2">
+                <img
+                  class="card-img m-0 my-auto"
+                  src="{{ news.image }}"
+                  alt="News card image cap"
+                />
+              </div>
+              <div class="col">
+                <h6>{{ news.headline }}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
 
     <!-- charts tab -->
-    <mat-tab label="Charts"> </mat-tab>
+    <mat-tab label="Charts">
+      <div class="container">
+        <highcharts-chart
+          class="big-chart col-sm"
+          *ngIf="bigChartDone"
+          [Highcharts]="HighCharts"
+          [constructorType]="'stockChart'"
+          [options]="bigChartOptions"
+        >
+        </highcharts-chart>
+      </div>
+    </mat-tab>
 
     <!-- insights tab -->
-    <mat-tab label="Insights"> </mat-tab>
+    <mat-tab label="Insights">
+      <div class="container">
+        <div class="row mt-2 justify-content-center">
+          <h3 class="row mt-3 pb-2 mx-auto justify-content-center">Social Sentiments</h3>
+          <table class="table" id="social-table">
+            <tbody>
+              <tr>
+                <th scope="col">{{ companyDescription.name }}</th>
+                <th scope="col">Reddit</th>
+                <th scope="col">Twitter</th>
+              </tr>
+              <tr>
+                <th scope="row">Total Mentions</th>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <th scope="row">Positive Mentions</th>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+              <tr>
+                <th scope="row">Negative Mentions</th>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </mat-tab>
   </mat-tab-group>
 </div>

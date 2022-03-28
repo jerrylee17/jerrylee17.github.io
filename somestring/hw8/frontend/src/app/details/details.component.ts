@@ -6,6 +6,11 @@ import { historicalData } from '../interfaces/historicalData';
 import { latestPrice } from '../interfaces/latestPrice';
 import * as Highcharts from 'highcharts/highstock';
 import { Options } from 'highcharts';
+import { companyNews } from '../interfaces/companyNews';
+import vbp from 'highcharts/indicators/volume-by-price';
+import indicators from 'highcharts/indicators/indicators';
+indicators(Highcharts);
+vbp(Highcharts);
 
 @Component({
   selector: 'app-details',
@@ -26,7 +31,11 @@ export class DetailsComponent implements OnInit {
   smallChartData: historicalData;
   smallChartOptions: Options;
   HighCharts: typeof Highcharts = Highcharts;
-  chartDone: boolean = false;
+  smallChartDone: boolean = false;
+  bigChartDone: boolean = false;
+  companyNews: companyNews[];
+  bigChartData: historicalData;
+  bigChartOptions: Options;
 
   constructor(private APIService: APIService, private route: ActivatedRoute) {}
 
@@ -34,12 +43,27 @@ export class DetailsComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.ticker = (params.get('ticker') || '').toUpperCase();
     });
-    
 
     this.fetchCompanyDescription();
     this.fetchLatestPrice();
+    this.fetchCompanyNews();
+    this.fetchBigChart();
+    // testing
     this.watchListed = true;
-    this.marketLastTimestamp = '2022-02-24 13:00:03';
+  }
+
+  fetchCompanyNews() {
+    let toDate = new Date();
+    let fromDate = new Date();
+    fromDate.setDate(toDate.getDate() - 7);
+
+    this.APIService.fetchCompanyNews(
+      this.ticker,
+      fromDate.toISOString().split('T')[0],
+      toDate.toISOString().split('T')[0]
+    ).subscribe((res) => {
+      this.companyNews = res;
+    });
   }
 
   fetchCompanyDescription() {
@@ -53,15 +77,169 @@ export class DetailsComponent implements OnInit {
     });
   }
 
+  createBigChart() {
+    let data: Array<any[]> = [];
+    let volumeData: Array<any[]> = [];
+    for (let i = 0; i < this.bigChartData.timestamp.length; i++) {
+      data.push([
+        this.bigChartData.timestamp[i],
+        this.bigChartData.close[i],
+        this.bigChartData.high[i],
+        this.bigChartData.low[i],
+        this.bigChartData.open[i],
+      ]);
+      volumeData.push([
+        this.bigChartData.timestamp[i],
+        this.bigChartData.volume[i],
+      ]);
+    }
+    var groupingUnits = [
+      [
+        'week', // unit name
+        [1], // allowed multiples
+      ],
+      ['month', [1, 2, 3, 4, 6]],
+    ];
+
+    this.bigChartOptions = {
+      series: [
+        {
+          type: 'candlestick',
+          name: this.ticker.toUpperCase(),
+          id: this.ticker,
+          zIndex: 2,
+          data: data,
+        },
+        {
+          type: 'column',
+          name: 'Volume',
+          id: 'volume',
+          data: volumeData,
+          yAxis: 1,
+        },
+        {
+          type: 'vbp',
+          linkedTo: this.ticker,
+          params: {
+            volumeSeriesID: 'volume',
+          },
+          dataLabels: {
+            enabled: false,
+          },
+          zoneLines: {
+            enabled: false,
+          },
+        },
+        {
+          type: 'sma',
+          linkedTo: this.ticker,
+          zIndex: 1,
+          marker: {
+            enabled: false,
+          },
+        },
+      ],
+      title: { text: `${this.ticker.toUpperCase()} Historical` },
+      subtitle: {
+        text: 'With SMA and Volume by Price technical indicators',
+      },
+      yAxis: [
+        {
+          startOnTick: false,
+          endOnTick: false,
+          labels: {
+            align: 'right',
+            x: -3,
+          },
+          title: {
+            text: 'OHLC',
+          },
+          height: '60%',
+          lineWidth: 2,
+          resize: {
+            enabled: true,
+          },
+        },
+        {
+          labels: {
+            align: 'right',
+            x: -3,
+          },
+          title: {
+            text: 'Volume',
+          },
+          top: '65%',
+          height: '35%',
+          offset: 0,
+          lineWidth: 2,
+        },
+      ],
+      tooltip: {
+        split: true,
+      },
+      responsive: {
+        rules: [
+          {
+            condition: { maxWidth: 500 },
+            chartOptions: {
+              plotOptions: {
+                series: {
+                  dataGrouping: {
+                    units: [
+                      [
+                        'week', // unit name
+                        [1], // allowed multiples
+                      ],
+                      ['month', [1, 2, 3, 4, 6]],
+                    ],
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
+      plotOptions: {
+      },
+      rangeSelector: {
+        buttons: [
+          {
+            type: 'month',
+            count: 1,
+            text: '1m',
+          },
+          {
+            type: 'month',
+            count: 3,
+            text: '3m',
+          },
+          {
+            type: 'month',
+            count: 6,
+            text: '6m',
+          },
+          {
+            type: 'ytd',
+            text: 'YTD',
+          },
+          {
+            type: 'year',
+            count: 1,
+            text: '1y',
+          },
+          {
+            type: 'all',
+            text: 'All',
+          },
+        ],
+        selected: 2,
+      },
+    };
+  }
+
   createSmallChart() {
     let data: Array<any[]> = [];
     for (let i = 0; i < this.smallChartData.timestamp.length; i++) {
-      // let parsedDate = new Date(this.smallChartData.timestamp[i])
-      //   .toTimeString()
-      //   .split(' ')[0];
-      // parsedDate =
-      //   parsedDate.split(':')[0] + ':' + parsedDate.split(':')[2] + ':';
-
       data.push([
         this.smallChartData.timestamp[i],
         this.smallChartData.close[i],
@@ -81,9 +259,6 @@ export class DetailsComponent implements OnInit {
           showInNavigator: true,
           name: this.ticker.toUpperCase(),
           type: 'line',
-          // tooltip: {
-          //   valueDecimals: 4,
-          // },
         },
       ],
       title: { text: `${this.ticker.toUpperCase()} Hourly Price Variation` },
@@ -101,19 +276,35 @@ export class DetailsComponent implements OnInit {
         labels: {
           formatter: function () {
             var time = this.value;
-            let parsedDate = new Date(time)
-              .toTimeString()
-              .split(' ')[0];
-            // console.log(parsedDate);
-            
+            let parsedDate = new Date(time).toTimeString().split(' ')[0];
             parsedDate =
               parsedDate.split(':')[0] + ':' + parsedDate.split(':')[1];
-            return parsedDate
+            return parsedDate;
           },
         },
-        tickInterval: 3600*1000
+        tickInterval: 3600 * 1000,
       },
     };
+  }
+
+  fetchBigChart() {
+    let toTimestamp = new Date();
+    let fromTimestamp = new Date();
+    fromTimestamp.setFullYear(toTimestamp.getFullYear() - 1);
+    fromTimestamp.setUTCDate(toTimestamp.getDay() - 1);
+    this.APIService.fetchHistoricalData(
+      this.ticker,
+      'D',
+      (fromTimestamp.getTime() / 1000).toFixed(0),
+      (toTimestamp.getTime() / 1000).toFixed(0)
+    ).subscribe((res) => {
+      this.bigChartData = res;
+      for (let i = 0; i < this.bigChartData.timestamp.length; i++) {
+        this.bigChartData.timestamp[i] *= 1000;
+      }
+      this.bigChartDone = true;
+      this.createBigChart();
+    });
   }
 
   fetchLatestPrice() {
@@ -130,8 +321,7 @@ export class DetailsComponent implements OnInit {
         this.marketOpen = false;
       } else {
         this.marketOpen = true;
-      }      
-      
+      }
 
       this.APIService.fetchHistoricalData(
         this.ticker,
@@ -144,7 +334,7 @@ export class DetailsComponent implements OnInit {
         for (let i = 0; i < this.smallChartData.timestamp.length; i++) {
           this.smallChartData.timestamp[i] *= 1000;
         }
-        this.chartDone = true;
+        this.smallChartDone = true;
         this.createSmallChart();
       });
     });

@@ -1,29 +1,52 @@
 .posChange {
-    color: green;
+  color: green;
 }
 
-.negChange{
-    color: red;
+.negChange {
+  color: red;
 }
 
 .logo {
-    max-height: 125px;
+  max-height: 125px;
 }
 
 strong {
-    display:inline !important;
+  display: inline !important;
 }
 
 .url-text {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .about-the-company {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .smallchart {
-    width: 100%;
-    height: 400px;
-    display: block;
+  width: 100%;
+  height: 400px;
+  display: block;
+}
+
+.news-card {
+  min-width: 45%;
+  max-height: 300px;
+}
+
+.big-chart {
+  width: 100%;
+  height: 700px;
+  display: block;
+}
+
+#social-table {
+    max-width: 700px;
+    text-align: center;
+    line-height: 2;
+}
+
+#social-table th{
+    font-weight: 500;
+    color: rgb(53, 53, 53);
+    background-color: rgba(226, 226, 226, 0.5);
 }

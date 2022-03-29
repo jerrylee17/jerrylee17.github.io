@@ -173,12 +173,6 @@ export class DetailsComponent implements OnInit {
           },
           xAxis: {
             categories: this.earningChartData.map((x) => `${x.period} \n Surprise: ${x.surprise}`)
-            // reversed: false,
-            // labels: {
-            //   format: '{x.period} <br /> Surprise: {x.surprise}'
-            // },
-            // maxPadding: 0.05,
-            // showLastLabel: true
           },
           yAxis: {
             title: {

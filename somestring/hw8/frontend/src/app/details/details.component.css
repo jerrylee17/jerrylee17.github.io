@@ -50,3 +50,8 @@ strong {
     color: rgb(53, 53, 53);
     background-color: rgba(226, 226, 226, 0.5);
 }
+
+.insightsChart {
+    /* width: 80%; */
+    min-width: 200px;
+}

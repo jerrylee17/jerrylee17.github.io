@@ -9,6 +9,10 @@ import { Options } from 'highcharts';
 import { companyNews } from '../interfaces/companyNews';
 import vbp from 'highcharts/indicators/volume-by-price';
 import indicators from 'highcharts/indicators/indicators';
+import { companySocialSentiment } from '../interfaces/companySocialSentiment';
+import { socialData } from '../interfaces/socialData';
+import { recommendationTrends } from '../interfaces/recommendationTrends';
+import { companyEarnings } from '../interfaces/companyEarnings';
 indicators(Highcharts);
 vbp(Highcharts);
 
@@ -36,8 +40,15 @@ export class DetailsComponent implements OnInit {
   companyNews: companyNews[];
   bigChartData: historicalData;
   bigChartOptions: Options;
+  socialData: socialData;
+  recommendationChartOptions: Options;
+  recommendationChartData: recommendationTrends[];
+  socialSentimentDone: boolean = false;
+  recommendationDone: boolean = false;
+  earningChartOptions: Options;
+  earningChartData: companyEarnings[];
 
-  constructor(private APIService: APIService, private route: ActivatedRoute) {}
+  constructor(private APIService: APIService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -48,8 +59,150 @@ export class DetailsComponent implements OnInit {
     this.fetchLatestPrice();
     this.fetchCompanyNews();
     this.fetchBigChart();
+    this.fetchCompanyInsights();
     // testing
     this.watchListed = true;
+  }
+
+  fetchCompanyInsights() {
+    // Get company social sentiment
+    this.APIService.fetchCompanySocialSentiment(this.ticker).subscribe(
+      (res) => {
+        // this.socialData = res;
+        // sum up reddit
+
+        let rtm = 0, rpm = 0, rnm = 0, ttm = 0, tpm = 0, tnm = 0;
+        for (let i = 0; i < res.reddit.length; i++) {
+          rtm += res.reddit[i].mention;
+          rpm += res.reddit[i].positiveMention;
+          rnm += res.reddit[i].negativeMention;
+        }
+
+        for (let i = 0; i < res.twitter.length; i++) {
+          ttm += res.twitter[i].mention;
+          tpm += res.twitter[i].positiveMention;
+          tnm += res.twitter[i].negativeMention;
+        }
+
+        this.socialData = {
+          rtm,
+          rpm,
+          rnm,
+          ttm,
+          tpm,
+          tnm,
+          symbol: res.symbol
+        };
+        this.socialSentimentDone = true;
+      })
+    // Recommendation Trends
+    this.APIService.fetchCompanyRecommendationTrends(this.ticker).subscribe(
+      (res) => {
+        this.recommendationChartData = res;
+
+        this.recommendationChartOptions = {
+          chart: {
+            type: 'column'
+          },
+          title: {
+            text: 'Recommendation Trends'
+          },
+          xAxis: {
+            categories: this.recommendationChartData.map(x => x.period.slice(0, 7))
+          },
+          yAxis: {
+            min: 0,
+            title: {
+              text: '#analysis',
+              align: 'high'
+            }
+          },
+          credits: {
+            enabled: false
+          },
+          plotOptions: {
+            column: {
+              stacking: 'normal',
+              dataLabels: {
+                enabled: true
+              }
+            },
+          },
+          series: [{
+            name: 'Strong Buy',
+            data: this.recommendationChartData.map(x => x.strongBuy),
+            type: 'column',
+            color: '#1c6d37'
+          }, {
+            name: 'Buy',
+            data: this.recommendationChartData.map(x => x.buy),
+            type: 'column',
+            color: '#19aa4d'
+          }, {
+            name: 'Hold',
+            data: this.recommendationChartData.map(x => x.hold),
+            type: 'column',
+            color: '#9f7719'
+          }, {
+            name: 'Sell',
+            data: this.recommendationChartData.map(x => x.sell),
+            type: 'column',
+            color: '#c2484b'
+          }, {
+            name: 'Strong Sell',
+            data: this.recommendationChartData.map(x => x.strongSell),
+            type: 'column',
+            color: '#602426'
+          },]
+        }
+        this.recommendationDone = true;
+      }
+    )
+    // Earnings
+    this.APIService.fetchCompanyEarnings(this.ticker).subscribe(
+      (res) => {
+        this.earningChartData = res;
+        console.log(res);
+
+        this.earningChartOptions = {
+          chart: {
+            type: 'spline',
+          },
+          title: {
+            text: 'Historical EPS Surprises'
+          },
+          xAxis: {
+            categories: this.earningChartData.map((x) => `${x.period} \n Surprise: ${x.surprise}`)
+            // reversed: false,
+            // labels: {
+            //   format: '{x.period} <br /> Surprise: {x.surprise}'
+            // },
+            // maxPadding: 0.05,
+            // showLastLabel: true
+          },
+          yAxis: {
+            title: {
+              text: 'Quarterly EPS'
+            }
+          },
+          legend: {
+            enabled: true
+          },
+          plotOptions: {
+          },
+          series: [{
+            name: 'Actual',
+            data: this.earningChartData.map((x) => x.actual || 0),
+            type: 'spline'
+          },
+          {
+            name: 'Estimate',
+            data: this.earningChartData.map((x) => x.estimate || 0),
+            type: 'spline'
+          }]
+        };
+      }
+    )
   }
 
   fetchCompanyNews() {

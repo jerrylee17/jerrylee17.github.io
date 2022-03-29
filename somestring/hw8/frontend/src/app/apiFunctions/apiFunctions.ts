@@ -6,6 +6,9 @@ import { companyDescription } from '../interfaces/companyDescription';
 import { historicalData } from '../interfaces/historicalData'
 import { Autocomplete } from '../interfaces/autocomplete';
 import { companyNews } from '../interfaces/companyNews';
+import { companySocialSentiment } from '../interfaces/companySocialSentiment';
+import { recommendationTrends } from '../interfaces/recommendationTrends';
+import { companyEarnings } from '../interfaces/companyEarnings';
 
 const HOST = 'http://localhost:3000';
 
@@ -18,6 +21,10 @@ export class APIService {
   private companyDescription = HOST + '/getCompanyDescription';
   private historicalData = HOST + '/getHistoricalData';
   private companyNews = HOST + '/getCompanyNews';
+  private companySocialSentiment = HOST + '/getCompanySocialSentiment';
+  private companyRecommendationTrends = HOST + '/getCompanyRecommendationTrends';
+  private companyEarnings = HOST + '/getCompanyEarnings';
+
 
   constructor(private http: HttpClient) {}
 
@@ -44,6 +51,21 @@ export class APIService {
   fetchCompanyNews(ticker, fromDate, toDate): Observable<companyNews[]> {
     const url = `${this.companyNews}?ticker=${ticker}&fromDate=${fromDate}&toDate=${toDate}`;    
     return this.http.get<companyNews[]>(url);
+  }
+
+  fetchCompanySocialSentiment(ticker): Observable<companySocialSentiment> {
+    const url = `${this.companySocialSentiment}?ticker=${ticker}`;    
+    return this.http.get<companySocialSentiment>(url);
+  }
+
+  fetchCompanyRecommendationTrends(ticker): Observable<recommendationTrends[]> {
+    const url = `${this.companyRecommendationTrends}?ticker=${ticker}`;    
+    return this.http.get<recommendationTrends[]>(url);
+  }
+
+  fetchCompanyEarnings(ticker): Observable<companyEarnings[]> {
+    const url = `${this.companyEarnings}?ticker=${ticker}`;    
+    return this.http.get<companyEarnings[]>(url);
   }
 }
 

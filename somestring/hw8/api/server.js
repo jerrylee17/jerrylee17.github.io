@@ -18,11 +18,6 @@ app.get("/getCompanyDescription", async (req, res) => {
     ticker = ticker.toUpperCase();
   }
   const url = `https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${API_KEY}`;
-  // const url = `https://finnhub.io/api/v1/stock/profile2`;
-  // const data = {
-  //   symbol: ticker,
-  //   token: API_KEY
-  // };
   let response = {};
   await axios
     .get(url)
@@ -158,9 +153,9 @@ app.get("/getCompanyRecommendationTrends", async (req, res) => {
 
 // 4.1.7
 app.get("/getCompanySocialSentiment", async (req, res) => {
-  let { ticker, fromDate, toDate } = req.query;
+  let { ticker } = req.query;
   ticker = ticker.toUpperCase();
-  const url = `https://finnhub.io/api/v1/stock/social-sentiment?symbol=${ticker}&from=${fromDate}&to=${toDate}&token=${API_KEY}`;
+  const url = `https://finnhub.io/api/v1/stock/social-sentiment?symbol=${ticker}&from=2022-01-01&token=${API_KEY}`;
   let response = {};
   await axios
     .get(url)
@@ -201,7 +196,7 @@ app.get("/getCompanyEarnings", async (req, res) => {
   await axios
     .get(url)
     .then((res) => {
-      response.data = res.data;
+      response = res.data;
     })
     .catch((err) => {
       response.data = err;

@@ -1,27 +1,25 @@
 <app-home></app-home>
 
-<mat-spinner
-  *ngIf="
+<mat-spinner *ngIf="
     !companyDescription ||
     !ticker ||
     !latestPrice ||
     !smallChartDone ||
     !companyNews ||
-    !bigChartDone
-  "
-  class="mx-auto mt-5"
->
+    !bigChartDone || 
+    !recommendationDone ||
+    !socialSentimentDone
+  " class="mx-auto mt-5">
 </mat-spinner>
-<div
-  *ngIf="
+<div *ngIf="
     companyDescription &&
     ticker &&
     latestPrice &&
     smallChartDone &&
-    bigChartDone
-  "
-  class="details-wrapper container p-5 mb-5"
->
+    bigChartDone &&
+    recommendationDone &&
+    socialSentimentDone
+  " class="details-wrapper container p-5 mb-5">
   <!-- Top info part -->
   <div class="details-header">
     <div class="row pb-5">
@@ -29,33 +27,16 @@
         <h1>
           {{ ticker }}
           <!-- empty star -->
-          <svg
-            *ngIf="!watchListed"
-            xmlns="http://www.w3.org/2000/svg"
-            width="0.7em"
-            height="0.7em"
-            fill="currentColor"
-            class="bi bi-star"
-            viewBox="0 0 16 16"
-          >
+          <svg *ngIf="!watchListed" xmlns="http://www.w3.org/2000/svg" width="0.7em" height="0.7em" fill="currentColor"
+            class="bi bi-star" viewBox="0 0 16 16">
             <path
-              d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"
-            />
+              d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
           </svg>
           <!-- filled star -->
-          <svg
-            *ngIf="watchListed"
-            xmlns="http://www.w3.org/2000/svg"
-            width="0.7em"
-            height="0.7em"
-            fill="currentColor"
-            fill="#FFC300"
-            class="bi bi-star-fill"
-            viewBox="0 0 16 16"
-          >
+          <svg *ngIf="watchListed" xmlns="http://www.w3.org/2000/svg" width="0.7em" height="0.7em" fill="currentColor"
+            fill="#FFC300" class="bi bi-star-fill" viewBox="0 0 16 16">
             <path
-              d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"
-            />
+              d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
           </svg>
         </h1>
         <h3 class="text-black-50 my-1">{{ companyDescription.name }}</h3>
@@ -73,63 +54,34 @@
         <img class="logo" src="{{ companyDescription.logo }}" />
       </div>
       <div class="col mr-1 flex-row justify-content-end">
-        <h1
-          class="d-flex flex-row-reverse"
-          [class.text-success]="change > 0"
-          [class.text-danger]="change < 0"
-        >
+        <h1 class="d-flex flex-row-reverse" [class.text-success]="change > 0" [class.text-danger]="change < 0">
           {{ latestPrice.price }}
         </h1>
         <!-- up arrow -->
         <h2 class="d-flex flex-row-reverse">
-          <div
-            [class.text-success]="change > 0"
-            [class.text-danger]="change < 0"
-          >
+          <div [class.text-success]="change > 0" [class.text-danger]="change < 0">
             {{ latestPrice.change }} ({{ latestPrice.percentChange }}%)
           </div>
-          <svg
-            *ngIf="change > 0"
-            xmlns="http://www.w3.org/2000/svg"
-            width="1em"
-            height="1em"
-            fill="green"
-            class="bi bi-caret-up-fill me-2 my-auto"
-            viewBox="0 0 16 16"
-          >
+          <svg *ngIf="change > 0" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="green"
+            class="bi bi-caret-up-fill me-2 my-auto" viewBox="0 0 16 16">
             <path
-              d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"
-            />
+              d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
           </svg>
           <!-- down arrow -->
-          <svg
-            *ngIf="change < 0"
-            xmlns="http://www.w3.org/2000/svg"
-            width="1em"
-            height="1em"
-            fill="red"
-            class="bi bi-caret-down-fill me-2 my-auto"
-            viewBox="0 0 16 16"
-          >
+          <svg *ngIf="change < 0" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="red"
+            class="bi bi-caret-down-fill me-2 my-auto" viewBox="0 0 16 16">
             <path
-              d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
-            />
+              d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
           </svg>
         </h2>
         <h6 class="d-flex flex-row-reverse">{{ currentTimestamp }}</h6>
       </div>
     </div>
     <div class="row">
-      <b
-        *ngIf="marketOpen"
-        class="border-0 pb-3 d-inline-flex justify-content-center text-success"
-      >
+      <b *ngIf="marketOpen" class="border-0 pb-3 d-inline-flex justify-content-center text-success">
         Market is open
       </b>
-      <b
-        *ngIf="!marketOpen"
-        class="border-0 pb-3 d-inline-flex justify-content-center text-danger"
-      >
+      <b *ngIf="!marketOpen" class="border-0 pb-3 d-inline-flex justify-content-center text-danger">
         Market closed on {{ marketLastTimestamp }}
       </b>
     </div>
@@ -145,53 +97,40 @@
               <!-- Prices -->
               <div class="col ms-5 p-0">
                 <p class="m-0">
-                  <span
-                    ><strong>High Price:</strong> {{ latestPrice.high }}</span
-                  >
+                  <span><strong>High Price:</strong> {{ latestPrice.high }}</span>
                 </p>
                 <p class="m-0">
                   <span><strong>Low Price:</strong> {{ latestPrice.low }}</span>
                 </p>
                 <p class="m-0">
-                  <span
-                    ><strong>Open Price:</strong> {{ latestPrice.open }}</span
-                  >
+                  <span><strong>Open Price:</strong> {{ latestPrice.open }}</span>
                 </p>
                 <p class="m-0">
-                  <span
-                    ><strong>Prev Close:</strong>
-                    {{ latestPrice.previousClose }}</span
-                  >
+                  <span><strong>Prev Close:</strong>
+                    {{ latestPrice.previousClose }}</span>
                 </p>
               </div>
             </div>
 
             <!-- About the company -->
             <div class="row mt-5">
-              <h2
-                class="row mt-1 pb-5 mx-auto justify-content-center about-the-company"
-              >
+              <h2 class="row mt-1 pb-5 mx-auto justify-content-center about-the-company">
                 About the Company
               </h2>
             </div>
             <p class="row">
-              <span
-                ><strong>IPO Start Date:</strong> {{ companyDescription.ipo }}
+              <span><strong>IPO Start Date:</strong> {{ companyDescription.ipo }}
               </span>
             </p>
             <p class="row">
-              <span
-                ><strong>Industry:</strong>
-                {{ companyDescription.finnhubIndustry }}</span
-              >
+              <span><strong>Industry:</strong>
+                {{ companyDescription.finnhubIndustry }}</span>
             </p>
             <p class="row">
-              <span
-                ><strong>Webpage: </strong>
+              <span><strong>Webpage: </strong>
                 <a class="url-text" href="{{ companyDescription.weburl }}">{{
                   companyDescription.weburl
-                }}</a></span
-              >
+                  }}</a></span>
             </p>
             <p class="row">
               <span>
@@ -201,11 +140,7 @@
             </p>
           </div>
           <div class="col-sm">
-            <highcharts-chart
-              [Highcharts]="HighCharts"
-              [options]="smallChartOptions"
-              class="smallchart"
-            >
+            <highcharts-chart [Highcharts]="HighCharts" [options]="smallChartOptions" class="smallchart">
             </highcharts-chart>
           </div>
         </div>
@@ -216,17 +151,10 @@
     <mat-tab label="Top News">
       <div class="container">
         <div class="row p-1" *ngIf="companyNews">
-          <div
-            class="card p-0 my-3 mx-auto col-sm-4 news-card"
-            *ngFor="let news of companyNews"
-          >
+          <div class="card p-0 my-3 mx-auto col-sm-4 news-card" *ngFor="let news of companyNews">
             <div class="card-body row">
               <div class="p-0 my-auto mx-1 col-md-2">
-                <img
-                  class="card-img m-0 my-auto"
-                  src="{{ news.image }}"
-                  alt="News card image cap"
-                />
+                <img class="card-img m-0 my-auto" src="{{ news.image }}" alt="News card image cap" />
               </div>
               <div class="col">
                 <h6>{{ news.headline }}</h6>
@@ -240,13 +168,8 @@
     <!-- charts tab -->
     <mat-tab label="Charts">
       <div class="container">
-        <highcharts-chart
-          class="big-chart col-sm"
-          *ngIf="bigChartDone"
-          [Highcharts]="HighCharts"
-          [constructorType]="'stockChart'"
-          [options]="bigChartOptions"
-        >
+        <highcharts-chart class="big-chart col-sm" *ngIf="bigChartDone" [Highcharts]="HighCharts"
+          [constructorType]="'stockChart'" [options]="bigChartOptions">
         </highcharts-chart>
       </div>
     </mat-tab>
@@ -259,27 +182,37 @@
           <table class="table" id="social-table">
             <tbody>
               <tr>
-                <th scope="col">{{ companyDescription.name }}</th>
+                <th scope="col">{{ socialData.symbol }}</th>
                 <th scope="col">Reddit</th>
                 <th scope="col">Twitter</th>
               </tr>
               <tr>
                 <th scope="row">Total Mentions</th>
-                <td>0</td>
-                <td>0</td>
+                <td>{{socialData.rtm}}</td>
+                <td>{{socialData.ttm}}</td>
               </tr>
               <tr>
                 <th scope="row">Positive Mentions</th>
-                <td>0</td>
-                <td>0</td>
+                <td>{{socialData.rpm}}</td>
+                <td>{{socialData.tpm}}</td>
               </tr>
               <tr>
                 <th scope="row">Negative Mentions</th>
-                <td>0</td>
-                <td>0</td>
+                <td>{{socialData.rnm}}</td>
+                <td>{{socialData.tnm}}</td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="row mt-2 pb-2">
+          <div class="col p-0 my-3 mx-auto col-sm-4">
+            <highcharts-chart [Highcharts]="HighCharts" [options]="recommendationChartOptions" class="smallchart">
+            </highcharts-chart>
+          </div>
+          <div class="col p-0 my-3 mx-auto col-sm-4">
+            <highcharts-chart [Highcharts]="HighCharts" [options]="earningChartOptions" class="smallchart">
+            </highcharts-chart>
+          </div>
         </div>
       </div>
     </mat-tab>

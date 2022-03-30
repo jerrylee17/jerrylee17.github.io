@@ -55,3 +55,8 @@ strong {
     /* width: 80%; */
     min-width: 200px;
 }
+
+.peers {
+  white-space: pre-line;
+  text-decoration: none;
+}

@@ -24,6 +24,8 @@ export class APIService {
   private companySocialSentiment = HOST + '/getCompanySocialSentiment';
   private companyRecommendationTrends = HOST + '/getCompanyRecommendationTrends';
   private companyEarnings = HOST + '/getCompanyEarnings';
+  private companyPeers = HOST + '/getCompanyPeers';
+
 
 
   constructor(private http: HttpClient) {}
@@ -67,5 +69,11 @@ export class APIService {
     const url = `${this.companyEarnings}?ticker=${ticker}`;    
     return this.http.get<companyEarnings[]>(url);
   }
+
+  fetchCompanyPeers(ticker): Observable<string[]> {
+    const url = `${this.companyPeers}?ticker=${ticker}`;    
+    return this.http.get<string[]>(url);
+  }
+  
 }
 

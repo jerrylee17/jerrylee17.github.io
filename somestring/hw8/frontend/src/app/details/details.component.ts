@@ -47,6 +47,8 @@ export class DetailsComponent implements OnInit {
   recommendationDone: boolean = false;
   earningChartOptions: Options;
   earningChartData: companyEarnings[];
+  companyPeers;
+  companyPeersDone: boolean = false;
 
   constructor(private APIService: APIService, private route: ActivatedRoute) { }
 
@@ -60,8 +62,18 @@ export class DetailsComponent implements OnInit {
     this.fetchCompanyNews();
     this.fetchBigChart();
     this.fetchCompanyInsights();
+    this.fetchCompanyPeers();
     // testing
     this.watchListed = true;
+  }
+
+  fetchCompanyPeers() {
+    this.APIService.fetchCompanyPeers(this.ticker).subscribe(
+      (res) => {
+        this.companyPeers = res;
+        this.companyPeersDone = true;
+      }
+    )
   }
 
   fetchCompanyInsights() {

@@ -93,6 +93,7 @@ app.get("/autocomplete", async (req, res) => {
         const data = {
           description: res.description,
           displaySymbol: res.displaySymbol,
+          symbol: res.symbol
         };
         // return `${data.displaySymbol} | ${data.description}`;
         return data;

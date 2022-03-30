@@ -80,9 +80,7 @@ export class DetailsComponent implements OnInit {
     // Get company social sentiment
     this.APIService.fetchCompanySocialSentiment(this.ticker).subscribe(
       (res) => {
-        // this.socialData = res;
         // sum up reddit
-
         let rtm = 0, rpm = 0, rnm = 0, ttm = 0, tpm = 0, tnm = 0;
         for (let i = 0; i < res.reddit.length; i++) {
           rtm += res.reddit[i].mention;
@@ -174,8 +172,6 @@ export class DetailsComponent implements OnInit {
     this.APIService.fetchCompanyEarnings(this.ticker).subscribe(
       (res) => {
         this.earningChartData = res;
-        console.log(res);
-
         this.earningChartOptions = {
           chart: {
             type: 'spline',

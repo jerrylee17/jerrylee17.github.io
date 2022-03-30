@@ -30,6 +30,8 @@ export class HomeComponent implements OnInit {
       )
       .subscribe((options) => {
         this.APIService.fetchAutocomplete(options).subscribe((val) => {
+          console.log(val);
+          
           this.options = val;
           this.isLoading = false;
         });
@@ -38,7 +40,7 @@ export class HomeComponent implements OnInit {
 
   onSubmit(ticker) {
     console.log(ticker);
-    this.router.navigateByUrl(`/search/${ticker}`);
+    this.router.navigateByUrl(`/search/${ticker.toUpperCase()}`);
     this.stockForm.reset();
   }
 

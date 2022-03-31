@@ -13,6 +13,7 @@ import { companySocialSentiment } from '../interfaces/companySocialSentiment';
 import { socialData } from '../interfaces/socialData';
 import { recommendationTrends } from '../interfaces/recommendationTrends';
 import { companyEarnings } from '../interfaces/companyEarnings';
+import { debounceTime, Subject } from 'rxjs';
 indicators(Highcharts);
 vbp(Highcharts);
 
@@ -49,8 +50,10 @@ export class DetailsComponent implements OnInit {
   earningChartData: companyEarnings[];
   companyPeers;
   companyPeersDone: boolean = false;
+  starMessage: boolean = false;
+  starAlert = new Subject<string>();
 
-  constructor(private APIService: APIService, private route: ActivatedRoute) { }
+  constructor(private APIService: APIService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -63,17 +66,49 @@ export class DetailsComponent implements OnInit {
     this.fetchBigChart();
     this.fetchCompanyInsights();
     this.fetchCompanyPeers();
-    // testing
-    this.watchListed = true;
+    this.fetchWatchList()
+
+    this.starAlert.subscribe(
+      () => this.starMessage = true
+    );
+
+    this.starAlert.pipe(
+      debounceTime(5000)
+    ).subscribe(() => this.starMessage = false)
+  }
+
+  fetchWatchList() {
+    let watchList = JSON.parse(localStorage.getItem('watchlist') || '[]')
+    let r = watchList.filter((x) => x.ticker == this.ticker.toUpperCase())
+    if (r.length) {
+      this.watchListed = true;
+    } else {
+      this.watchListed = false;
+    }
+  }
+
+  onClickStar() {
+    this.watchListed = !this.watchListed;
+    let watchList = JSON.parse(localStorage.getItem('watchlist') || '[]')
+    if (this.watchListed){
+      let x = {
+        ticker: this.ticker.toUpperCase(),
+        name: this.companyDescription.name
+      };
+      watchList.push(x);
+      localStorage.setItem('watchlist', JSON.stringify(watchList));
+    } else {
+      let x = watchList.filter((r) => r.ticker != this.ticker.toUpperCase())
+      localStorage.setItem('watchlist', JSON.stringify(x));
+    }
+    this.starAlert.next('Next');
   }
 
   fetchCompanyPeers() {
-    this.APIService.fetchCompanyPeers(this.ticker).subscribe(
-      (res) => {
-        this.companyPeers = res;
-        this.companyPeersDone = true;
-      }
-    )
+    this.APIService.fetchCompanyPeers(this.ticker).subscribe((res) => {
+      this.companyPeers = res;
+      this.companyPeersDone = true;
+    });
   }
 
   fetchCompanyInsights() {
@@ -81,7 +116,12 @@ export class DetailsComponent implements OnInit {
     this.APIService.fetchCompanySocialSentiment(this.ticker).subscribe(
       (res) => {
         // sum up reddit
-        let rtm = 0, rpm = 0, rnm = 0, ttm = 0, tpm = 0, tnm = 0;
+        let rtm = 0,
+          rpm = 0,
+          rnm = 0,
+          ttm = 0,
+          tpm = 0,
+          tnm = 0;
         for (let i = 0; i < res.reddit.length; i++) {
           rtm += res.reddit[i].mention;
           rpm += res.reddit[i].positiveMention;
@@ -101,10 +141,11 @@ export class DetailsComponent implements OnInit {
           ttm,
           tpm,
           tnm,
-          symbol: res.symbol
+          symbol: res.symbol,
         };
         this.socialSentimentDone = true;
-      })
+      }
+    );
     // Recommendation Trends
     this.APIService.fetchCompanyRecommendationTrends(this.ticker).subscribe(
       (res) => {
@@ -112,99 +153,108 @@ export class DetailsComponent implements OnInit {
 
         this.recommendationChartOptions = {
           chart: {
-            type: 'column'
+            type: 'column',
           },
           title: {
-            text: 'Recommendation Trends'
+            text: 'Recommendation Trends',
           },
           xAxis: {
-            categories: this.recommendationChartData.map(x => x.period.slice(0, 7))
+            categories: this.recommendationChartData.map((x) =>
+              x.period.slice(0, 7)
+            ),
           },
           yAxis: {
             min: 0,
             title: {
               text: '#analysis',
-              align: 'high'
-            }
+              align: 'high',
+            },
           },
           credits: {
-            enabled: false
+            enabled: false,
           },
           plotOptions: {
             column: {
               stacking: 'normal',
               dataLabels: {
-                enabled: true
-              }
+                enabled: true,
+              },
             },
           },
-          series: [{
-            name: 'Strong Buy',
-            data: this.recommendationChartData.map(x => x.strongBuy),
-            type: 'column',
-            color: '#1c6d37'
-          }, {
-            name: 'Buy',
-            data: this.recommendationChartData.map(x => x.buy),
-            type: 'column',
-            color: '#19aa4d'
-          }, {
-            name: 'Hold',
-            data: this.recommendationChartData.map(x => x.hold),
-            type: 'column',
-            color: '#9f7719'
-          }, {
-            name: 'Sell',
-            data: this.recommendationChartData.map(x => x.sell),
-            type: 'column',
-            color: '#c2484b'
-          }, {
-            name: 'Strong Sell',
-            data: this.recommendationChartData.map(x => x.strongSell),
-            type: 'column',
-            color: '#602426'
-          },]
-        }
+          series: [
+            {
+              name: 'Strong Buy',
+              data: this.recommendationChartData.map((x) => x.strongBuy),
+              type: 'column',
+              color: '#1c6d37',
+            },
+            {
+              name: 'Buy',
+              data: this.recommendationChartData.map((x) => x.buy),
+              type: 'column',
+              color: '#19aa4d',
+            },
+            {
+              name: 'Hold',
+              data: this.recommendationChartData.map((x) => x.hold),
+              type: 'column',
+              color: '#9f7719',
+            },
+            {
+              name: 'Sell',
+              data: this.recommendationChartData.map((x) => x.sell),
+              type: 'column',
+              color: '#c2484b',
+            },
+            {
+              name: 'Strong Sell',
+              data: this.recommendationChartData.map((x) => x.strongSell),
+              type: 'column',
+              color: '#602426',
+            },
+          ],
+        };
         this.recommendationDone = true;
       }
-    )
+    );
     // Earnings
-    this.APIService.fetchCompanyEarnings(this.ticker).subscribe(
-      (res) => {
-        this.earningChartData = res;
-        this.earningChartOptions = {
-          chart: {
-            type: 'spline',
-          },
+    this.APIService.fetchCompanyEarnings(this.ticker).subscribe((res) => {
+      this.earningChartData = res;
+      this.earningChartOptions = {
+        chart: {
+          type: 'spline',
+        },
+        title: {
+          text: 'Historical EPS Surprises',
+        },
+        xAxis: {
+          categories: this.earningChartData.map(
+            (x) => `${x.period} \n Surprise: ${x.surprise}`
+          ),
+        },
+        yAxis: {
           title: {
-            text: 'Historical EPS Surprises'
+            text: 'Quarterly EPS',
           },
-          xAxis: {
-            categories: this.earningChartData.map((x) => `${x.period} \n Surprise: ${x.surprise}`)
-          },
-          yAxis: {
-            title: {
-              text: 'Quarterly EPS'
-            }
-          },
-          legend: {
-            enabled: true
-          },
-          plotOptions: {
-          },
-          series: [{
+        },
+        legend: {
+          enabled: true,
+        },
+        plotOptions: {},
+        series: [
+          {
             name: 'Actual',
             data: this.earningChartData.map((x) => x.actual || 0),
-            type: 'spline'
+            type: 'spline',
           },
           {
             name: 'Estimate',
             data: this.earningChartData.map((x) => x.estimate || 0),
-            type: 'spline'
-          }]
-        };
-      }
-    )
+            type: 'spline',
+          },
+        ],
+      };
+    });
   }
 
   fetchCompanyNews() {
@@ -354,8 +404,7 @@ export class DetailsComponent implements OnInit {
           },
         ],
       },
-      plotOptions: {
-      },
+      plotOptions: {},
       rangeSelector: {
         buttons: [
           {

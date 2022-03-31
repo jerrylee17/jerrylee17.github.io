@@ -60,3 +60,7 @@ strong {
   white-space: pre-line;
   text-decoration: none;
 }
+
+.watchlist {
+  cursor: pointer;
+}

@@ -4,7 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-transaction-modal',
   templateUrl: './transaction-modal.component.html',
-  styleUrls: ['./transaction-modal.component.css']
+  styleUrls: ['./transaction-modal.component.css'],
 })
 export class TransactionModalComponent implements OnInit {
   @Input() public ticker: string;
@@ -18,50 +18,42 @@ export class TransactionModalComponent implements OnInit {
   noStocks: boolean = false;
   noMoney: boolean = false;
 
-  calculateMaxQuantity(){
-    console.log(this.money);
-    console.log(this.price);
-    
-    
+  calculateMaxQuantity() {
+
     let portfolio = JSON.parse(localStorage.getItem('portfolio') || '[]');
     if (this.opt == 'sell') {
       // Max to sell
-      let item = portfolio.filter((x) => x.ticker = this.ticker)[0];
-      this.maxQuantity = item.quantity
-    } else if (this.opt == 'buy'){
-      // Max to buy
-      let item = portfolio.filter((x) => x.ticker = this.ticker);
-      if (item.length){       
-        this.maxQuantity = Math.floor(this.money / this.price)
-      }
+      let item = portfolio.filter((x) => (x.ticker = this.ticker))[0];
+      this.maxQuantity = item.quantity;
+    } else if (this.opt == 'buy') {
+      console.log(this.money);
+      console.log(this.price);
+      this.maxQuantity = Math.floor(this.money / this.price);
     }
-    console.log(this.maxQuantity);
   }
 
-  checkIfValidInput(){
+  checkIfValidInput() {
     // console.log(this.inputQuantity);
     // Make sure you have enough money
-    if (this.opt == 'buy'){
-      if (this.inputQuantity > this.maxQuantity){
+    if (this.opt == 'buy') {
+      if (this.inputQuantity > this.maxQuantity) {
         this.noMoney = true;
       }
     }
-    if (this.opt == 'sell'){
-      if (this.inputQuantity > this.maxQuantity){
+    if (this.opt == 'sell') {
+      if (this.inputQuantity > this.maxQuantity) {
         this.noStocks = true;
       }
     }
   }
 
-  constructor(public modalService: NgbActiveModal) { }
+  constructor(public modalService: NgbActiveModal) {}
 
   ngOnInit(): void {
     this.money = parseFloat(localStorage.getItem('money') || '0');
-    console.log(this.money);
-    console.log(this.price);
-    
-    this.calculateMaxQuantity();
-    if (this.opt == 'buy'){}
-  }
 
+    this.calculateMaxQuantity();
+    if (this.opt == 'buy') {
+    }
+  }
 }

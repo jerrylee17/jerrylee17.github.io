@@ -14,6 +14,8 @@ import { socialData } from '../interfaces/socialData';
 import { recommendationTrends } from '../interfaces/recommendationTrends';
 import { companyEarnings } from '../interfaces/companyEarnings';
 import { debounceTime, Subject } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TransactionModalComponent } from '../transaction-modal/transaction-modal.component';
 indicators(Highcharts);
 vbp(Highcharts);
 
@@ -53,7 +55,21 @@ export class DetailsComponent implements OnInit {
   starMessage: boolean = false;
   starAlert = new Subject<string>();
 
-  constructor(private APIService: APIService, private route: ActivatedRoute) {}
+  constructor(
+    private ModalService: NgbModal,
+    private APIService: APIService,
+    private route: ActivatedRoute
+  ) {}
+
+  openTransaction(ticker, name, price, opt){
+    const modalRef = this.ModalService.open(
+      TransactionModalComponent
+    );
+    modalRef.componentInstance.ticker = ticker;
+    modalRef.componentInstance.name = name;
+    modalRef.componentInstance.price = price;
+    modalRef.componentInstance.opt = opt;
+  }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -66,20 +82,18 @@ export class DetailsComponent implements OnInit {
     this.fetchBigChart();
     this.fetchCompanyInsights();
     this.fetchCompanyPeers();
-    this.fetchWatchList()
+    this.fetchWatchList();
 
-    this.starAlert.subscribe(
-      () => this.starMessage = true
-    );
+    this.starAlert.subscribe(() => (this.starMessage = true));
 
-    this.starAlert.pipe(
-      debounceTime(5000)
-    ).subscribe(() => this.starMessage = false)
+    this.starAlert
+      .pipe(debounceTime(5000))
+      .subscribe(() => (this.starMessage = false));
   }
 
   fetchWatchList() {
-    let watchList = JSON.parse(localStorage.getItem('watchlist') || '[]')
-    let r = watchList.filter((x) => x.ticker == this.ticker.toUpperCase())
+    let watchList = JSON.parse(localStorage.getItem('watchlist') || '[]');
+    let r = watchList.filter((x) => x.ticker == this.ticker.toUpperCase());
     if (r.length) {
       this.watchListed = true;
     } else {
@@ -89,19 +103,19 @@ export class DetailsComponent implements OnInit {
 
   onClickStar() {
     this.watchListed = !this.watchListed;
-    let watchList = JSON.parse(localStorage.getItem('watchlist') || '[]')
-    if (this.watchListed){
+    let watchList = JSON.parse(localStorage.getItem('watchlist') || '[]');
+    if (this.watchListed) {
       let x = {
         ticker: this.ticker.toUpperCase(),
-        name: this.companyDescription.name
+        name: this.companyDescription.name,
       };
       watchList.push(x);
       localStorage.setItem('watchlist', JSON.stringify(watchList));
     } else {
-      let x = watchList.filter((r) => r.ticker != this.ticker.toUpperCase())
+      let x = watchList.filter((r) => r.ticker != this.ticker.toUpperCase());
       localStorage.setItem('watchlist', JSON.stringify(x));
     }
-    this.starAlert.next('Next');
+    this.starAlert.next('next');
   }
 
   fetchCompanyPeers() {

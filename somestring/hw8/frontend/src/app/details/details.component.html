@@ -28,19 +28,19 @@
   "
   class="details-wrapper container p-5 mb-5"
 >
-    <!-- watchlist alert -->
-    <ngb-alert
+  <!-- watchlist alert -->
+  <ngb-alert
     *ngIf="starMessage && watchListed"
     type="success"
     class="text-center"
-    (close)="starMessage = false"
+    (closed)="starMessage = false"
     >{{ ticker | uppercase }} added to Watchlist.</ngb-alert
   >
   <ngb-alert
     *ngIf="starMessage && !watchListed"
     type="danger"
     class="text-center"
-    (close)="starMessage = false"
+    (closed)="starMessage = false"
     >{{ ticker | uppercase }} removed from Watchlist.</ngb-alert
   >
 
@@ -86,10 +86,30 @@
         <h6 class="font-weight-light mt-2 mb-3">
           {{ companyDescription.exchange }}
         </h6>
-        <button class="btn btn-primary bg-success border-0 px-3 py-2 me-2">
+        <button
+          class="btn btn-primary bg-success border-0 px-3 py-2 me-2"
+          (click)="
+            openTransaction(
+              companyDescription.ticker,
+              companyDescription.name,
+              latestPrice.price,
+              'buy'
+            )
+          "
+        >
           Buy
         </button>
-        <button class="btn btn-primary bg-danger border-0 px-3 py-2">
+        <button
+          class="btn btn-primary bg-danger border-0 px-3 py-2"
+          (click)="
+            openTransaction(
+              companyDescription.ticker,
+              companyDescription.name,
+              latestPrice.price,
+              'sell'
+            )
+          "
+        >
           Sell
         </button>
       </div>

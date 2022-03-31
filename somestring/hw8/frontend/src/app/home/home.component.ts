@@ -30,17 +30,20 @@ export class HomeComponent implements OnInit {
       )
       .subscribe((options) => {
         this.APIService.fetchAutocomplete(options).subscribe((val) => {
-          console.log(val);
-          
           this.options = val;
           this.isLoading = false;
         });
       });
   }
 
+  redirectTo(uri:string){
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
+    this.router.navigate([uri]));
+ }
+
   onSubmit(ticker) {
     console.log(ticker);
-    this.router.navigateByUrl(`/search/${ticker.toUpperCase()}`);
+    this.redirectTo(`/search/${ticker.toUpperCase()}`);
     this.stockForm.reset();
   }
 

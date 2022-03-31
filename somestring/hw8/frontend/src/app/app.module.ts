@@ -10,7 +10,7 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { APIService } from './apiFunctions/apiFunctions';
 import { HttpClientModule } from '@angular/common/http';
@@ -18,6 +18,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DetailsComponent } from './details/details.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { TransactionModalComponent } from './transaction-modal/transaction-modal.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
     NavbarComponent,
     FooterComponent,
     DetailsComponent,
+    TransactionModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +42,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
     MatProgressSpinnerModule,
     MatTabsModule,
     HighchartsChartModule,
+    FormsModule
   ],
   providers: [APIService],
   bootstrap: [AppComponent],

@@ -33,7 +33,14 @@
 <div class="modal-body">
   &nbsp;&nbsp;Current Price: {{ price | number: "1.0-2" }}<br />
   &nbsp;&nbsp;Money in wallet: {{ money | number: "1.2" }}<br />
-  &nbsp;&nbsp;Quantity <input type="number" min="0" [(ngModel)]="inputQuantity" /><br />
+  &nbsp;&nbsp;Quantity 
+  <input type="number" min="0" [(ngModel)]="inputQuantity" (change)="checkIfValidInput()"/><br />
+  <p class="text-danger mt-2" *ngIf="noStocks">
+    &nbsp;&nbsp;You cannot sell the stocks you don't have!
+  </p>
+  <p class="text-danger mt-2" *ngIf="noMoney">
+    &nbsp;&nbsp;Not enough money in wallet!
+  </p>
 </div>
 
 <!-- modal footer -->
@@ -41,10 +48,9 @@
   <p class="me-auto">Total : {{ inputQuantity * price | number: "1.2" }}</p>
   <button
     type="button"
-    [disabled]="!inputQuantity || (maxQuantity && inputQuantity > maxQuantity)"
-    class="border btn border-0 text-white btn-outline-dark"
-    [ngClass]="{'bg-danger': opt == 'sell', 'bg-success': opt=='buy'}"
+    [disabled]="!inputQuantity || noStocks || noMoney"
+    class="border btn border-0 text-white btn-outline-dark bg-success"
   >
-    {{ opt }}
+    {{ opt.charAt(0).toUpperCase() + opt.slice(1) }}
   </button>
 </div>

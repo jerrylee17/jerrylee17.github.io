@@ -15,8 +15,14 @@ export class TransactionModalComponent implements OnInit {
   inputQuantity: number = 0;
   maxQuantity: number = 0;
   money: number;
+  noStocks: boolean = false;
+  noMoney: boolean = false;
 
-  getTickerStorage(){
+  calculateMaxQuantity(){
+    console.log(this.money);
+    console.log(this.price);
+    
+    
     let portfolio = JSON.parse(localStorage.getItem('portfolio') || '[]');
     if (this.opt == 'sell') {
       // Max to sell
@@ -25,8 +31,24 @@ export class TransactionModalComponent implements OnInit {
     } else if (this.opt == 'buy'){
       // Max to buy
       let item = portfolio.filter((x) => x.ticker = this.ticker);
-      if (item.length){
+      if (item.length){       
         this.maxQuantity = Math.floor(this.money / this.price)
+      }
+    }
+    console.log(this.maxQuantity);
+  }
+
+  checkIfValidInput(){
+    // console.log(this.inputQuantity);
+    // Make sure you have enough money
+    if (this.opt == 'buy'){
+      if (this.inputQuantity > this.maxQuantity){
+        this.noMoney = true;
+      }
+    }
+    if (this.opt == 'sell'){
+      if (this.inputQuantity > this.maxQuantity){
+        this.noStocks = true;
       }
     }
   }
@@ -35,6 +57,11 @@ export class TransactionModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.money = parseFloat(localStorage.getItem('money') || '0');
+    console.log(this.money);
+    console.log(this.price);
+    
+    this.calculateMaxQuantity();
+    if (this.opt == 'buy'){}
   }
 
 }

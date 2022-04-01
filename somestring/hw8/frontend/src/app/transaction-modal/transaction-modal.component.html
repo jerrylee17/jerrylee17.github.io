@@ -50,6 +50,7 @@
     type="button"
     [disabled]="!inputQuantity || noStocks || noMoney"
     class="border btn border-0 text-white btn-outline-dark bg-success"
+    (click)="submitOrder()"
   >
     {{ opt.charAt(0).toUpperCase() + opt.slice(1) }}
   </button>

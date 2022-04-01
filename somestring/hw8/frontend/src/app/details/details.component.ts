@@ -54,14 +54,16 @@ export class DetailsComponent implements OnInit {
   companyPeersDone: boolean = false;
   starMessage: boolean = false;
   starAlert = new Subject<string>();
+  purchaseMessage = false;
+  purchaseAlert = new Subject<string>();
 
   constructor(
     private ModalService: NgbModal,
     private APIService: APIService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
-  openTransaction(ticker, name, price, opt){
+  openTransaction(ticker, name, price, opt) {
     const modalRef = this.ModalService.open(
       TransactionModalComponent
     );
@@ -69,6 +71,9 @@ export class DetailsComponent implements OnInit {
     modalRef.componentInstance.name = name;
     modalRef.componentInstance.price = price;
     modalRef.componentInstance.opt = opt;
+    modalRef.result.then(() => {
+      this.purchaseAlert.next('next');
+    })
   }
 
   ngOnInit(): void {
@@ -89,6 +94,12 @@ export class DetailsComponent implements OnInit {
     this.starAlert
       .pipe(debounceTime(5000))
       .subscribe(() => (this.starMessage = false));
+
+    this.purchaseAlert.subscribe(() => (this.purchaseMessage = true));
+
+    this.purchaseAlert
+      .pipe(debounceTime(5000))
+      .subscribe(() => (this.purchaseMessage = false));
   }
 
   fetchWatchList() {

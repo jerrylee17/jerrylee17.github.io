@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   public navbarCollapsable = true;
+
+  ngOnInit(): void {
+    localStorage.setItem('money', '25000')
+  }
 }

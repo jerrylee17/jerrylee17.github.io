@@ -3,7 +3,6 @@
     <h1 class="watchlist-header mx-2">My Watchlist</h1>
   </div>
   <div class="container my-0 p-0">
-    <mat-spinner *ngIf="!watchListDone && !isEmpty" class="mx-auto mt-3"></mat-spinner>
     <ngb-alert [dismissible]="false" *ngIf="isEmpty" class="mx-3 text-center text-dark">Currently you don't have any
       stock
       in your watchlist.

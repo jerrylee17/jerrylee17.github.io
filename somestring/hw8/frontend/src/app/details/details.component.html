@@ -44,6 +44,15 @@
     >{{ ticker | uppercase }} removed from Watchlist.</ngb-alert
   >
 
+  <!-- purchase alert -->
+  <ngb-alert
+    *ngIf="purchaseMessage"
+    type="success"
+    class="text-center"
+    (closed)="purchaseMessage = false"
+    >{{ ticker | uppercase }} bought successfully.</ngb-alert
+  >
+
   <!-- Top info part -->
   <div class="details-header">
     <div class="row pb-5">

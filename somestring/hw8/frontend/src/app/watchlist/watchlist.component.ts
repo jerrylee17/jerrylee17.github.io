@@ -27,8 +27,6 @@ export class WatchlistComponent implements OnInit {
   fetchWatchList() {
     let watchList = JSON.parse(localStorage.getItem('watchlist') || '[]');
     this.isEmpty = watchList.length ? false : true;
-    console.log(watchList);
-    console.log(this.isEmpty);
     
     
     for (let i = 0; i < watchList.length; i++) {

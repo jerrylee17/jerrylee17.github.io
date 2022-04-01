@@ -1,0 +1,16 @@
+h1.watchlist-header {
+    font-weight: 500;
+    font-size: 40px;
+}
+
+.stock-card {
+    cursor: pointer;
+}
+
+.stock-card > .btn-close {
+    padding: 10px !important;
+}
+
+.watchlist-wrapper {
+    max-width: 1000px;
+}

@@ -36,13 +36,12 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  redirectTo(uri:string){
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>
-    this.router.navigate([uri]));
- }
+  redirectTo(uri: string) {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate([uri]));
+  }
 
   onSubmit(ticker) {
-    console.log(ticker);
     this.redirectTo(`/search/${ticker.toUpperCase()}`);
     this.stockForm.reset();
   }
@@ -51,8 +50,8 @@ export class HomeComponent implements OnInit {
     this.stockForm.setValue('');
   }
 
-  setTicker(company){
-    if (company){
+  setTicker(company) {
+    if (company) {
       return company.displaySymbol;
     }
   }

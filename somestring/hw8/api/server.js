@@ -179,7 +179,7 @@ app.get("/getCompanyPeers", async (req, res) => {
   await axios
     .get(url)
     .then((res) => {
-      response = res.data;
+      response = res.data.filter((x) => x.length > 0);
     })
     .catch((err) => {
       response.data = err;

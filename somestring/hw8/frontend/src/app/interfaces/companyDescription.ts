@@ -8,4 +8,5 @@ export interface companyDescription {
   name: string;
   ticker: string;
   weburl: string;
+  error: boolean;
 }

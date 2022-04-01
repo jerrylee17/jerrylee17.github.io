@@ -7,4 +7,5 @@ export interface latestPrice {
   open: number;
   previousClose: number;
   timestamp: number;
+  error: string;
 }

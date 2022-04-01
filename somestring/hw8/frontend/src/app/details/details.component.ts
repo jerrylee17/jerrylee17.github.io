@@ -13,7 +13,7 @@ import { companySocialSentiment } from '../interfaces/companySocialSentiment';
 import { socialData } from '../interfaces/socialData';
 import { recommendationTrends } from '../interfaces/recommendationTrends';
 import { companyEarnings } from '../interfaces/companyEarnings';
-import { debounceTime, Subject } from 'rxjs';
+import { debounceTime, interval, Observable, Subject, timer } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TransactionModalComponent } from '../transaction-modal/transaction-modal.component';
 indicators(Highcharts);
@@ -30,7 +30,7 @@ export class DetailsComponent implements OnInit {
   change: number = 0;
   currentTimestamp: string = '';
   watchListed: boolean = false;
-  marketOpen: boolean = false;
+  marketOpen;
   lastTimestamp;
   marketLastTimestamp: string = '';
   companyDescription: companyDescription;
@@ -59,6 +59,9 @@ export class DetailsComponent implements OnInit {
   sellMessage = false;
   sellAlert = new Subject<string>();
   sellBtnVisibility: boolean = false;
+
+  apiError: boolean = false;
+  updateSummarySub;
 
   constructor(
     private ModalService: NgbModal,
@@ -110,13 +113,17 @@ export class DetailsComponent implements OnInit {
       .pipe(debounceTime(5000))
       .subscribe(() => (this.starMessage = false));
 
-    this.purchaseAlert.subscribe(() => (this.purchaseMessage = true));
+    this.purchaseAlert.subscribe((res) => {
+      if (res) this.purchaseMessage = true;
+    });
 
     this.purchaseAlert
       .pipe(debounceTime(5000))
       .subscribe(() => (this.purchaseMessage = false));
 
-    this.sellAlert.subscribe(() => (this.sellMessage = true));
+    this.sellAlert.subscribe((res) => {
+      if (res) this.sellMessage = true;
+    });
 
     this.sellAlert
       .pipe(debounceTime(5000))
@@ -559,34 +566,42 @@ export class DetailsComponent implements OnInit {
   }
 
   fetchLatestPrice() {
-    this.APIService.fetchLatestPrice(this.ticker).subscribe((res) => {
-      this.latestPrice = res;
-      this.change = this.latestPrice.change;
-      this.currentTimestamp = this.formatDate(new Date());
-      this.lastTimestamp = new Date(this.latestPrice.timestamp * 1000);
-      this.marketLastTimestamp = this.formatDate(this.lastTimestamp);
-      let startTime = new Date(this.lastTimestamp);
-      startTime.setHours(this.lastTimestamp.getHours() - 6);
-
-      if (Date.now() - this.lastTimestamp > 60 * 1000) {
-        this.marketOpen = false;
-      } else {
-        this.marketOpen = true;
-      }
-
-      this.APIService.fetchHistoricalData(
-        this.ticker,
-        '5',
-        (startTime.getTime() / 1000).toFixed(0),
-        (this.lastTimestamp.getTime() / 1000).toFixed(0)
-      ).subscribe((res) => {
-        this.smallChartData = res;
-        // convert the timestamps
-        for (let i = 0; i < this.smallChartData.timestamp.length; i++) {
-          this.smallChartData.timestamp[i] *= 1000;
+    this.updateSummarySub = timer(0, 15000).subscribe(() => {
+      this.APIService.fetchLatestPrice(this.ticker).subscribe((res) => {
+        if (res.error) {
+          this.apiError = true;
+          this.updateSummarySub.unsubscribe();
         }
-        this.smallChartDone = true;
-        this.createSmallChart();
+        this.apiError = false;
+
+        this.latestPrice = res;
+        this.change = this.latestPrice.change;
+        this.currentTimestamp = this.formatDate(new Date());
+        this.lastTimestamp = new Date(this.latestPrice.timestamp * 1000);
+        this.marketLastTimestamp = this.formatDate(this.lastTimestamp);
+        let startTime = new Date(this.lastTimestamp);
+        startTime.setHours(this.lastTimestamp.getHours() - 6);
+
+        if (Date.now() - this.lastTimestamp > 60 * 1000 * 5) {
+          this.marketOpen = false;
+        } else {
+          this.marketOpen = true;
+        }
+
+        this.APIService.fetchHistoricalData(
+          this.ticker,
+          '5',
+          (startTime.getTime() / 1000).toFixed(0),
+          (this.lastTimestamp.getTime() / 1000).toFixed(0)
+        ).subscribe((res) => {
+          this.smallChartData = res;
+          // convert the timestamps
+          for (let i = 0; i < this.smallChartData.timestamp.length; i++) {
+            this.smallChartData.timestamp[i] *= 1000;
+          }
+          this.createSmallChart();
+          this.smallChartDone = true;
+        });
       });
     });
   }
@@ -609,5 +624,9 @@ export class DetailsComponent implements OnInit {
         this.padDigits(date.getSeconds()),
       ].join(':')
     );
+  }
+
+  ngOnDestroy() {
+    this.updateSummarySub.unsubscribe();
   }
 }

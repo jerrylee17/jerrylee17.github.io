@@ -1,3 +1,11 @@
+<ngb-alert
+    *ngIf="apiError"
+    type="danger"
+    class="text-center"
+    [dismissible]="false"
+    >API Rate limit exceeded. Try again later</ngb-alert
+  >
+
 <app-home></app-home>
 
 <mat-spinner
@@ -24,7 +32,8 @@
     bigChartDone &&
     recommendationDone &&
     socialSentimentDone &&
-    companyPeersDone
+    companyPeersDone &&
+    !apiError
   "
   class="details-wrapper container p-5 mb-5"
 >

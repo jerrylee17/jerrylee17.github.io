@@ -56,24 +56,39 @@ export class DetailsComponent implements OnInit {
   starAlert = new Subject<string>();
   purchaseMessage = false;
   purchaseAlert = new Subject<string>();
+  sellMessage = false;
+  sellAlert = new Subject<string>();
+  sellBtnVisibility: boolean = false;
 
   constructor(
     private ModalService: NgbModal,
     private APIService: APIService,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   openTransaction(ticker, name, price, opt) {
-    const modalRef = this.ModalService.open(
-      TransactionModalComponent
-    );
+    const modalRef = this.ModalService.open(TransactionModalComponent);
     modalRef.componentInstance.ticker = ticker;
     modalRef.componentInstance.name = name;
     modalRef.componentInstance.price = price;
     modalRef.componentInstance.opt = opt;
     modalRef.result.then(() => {
-      this.purchaseAlert.next('next');
-    })
+      if (opt == 'buy') this.purchaseAlert.next('next');
+      else this.sellAlert.next('next');
+      this.setSellBtn();
+    });
+  }
+
+  setSellBtn() {
+    if (
+      JSON.parse(localStorage.getItem('portfolio') || '[]').filter(
+        (x) => x.ticker == this.companyDescription.ticker
+      ).length
+    ) {
+      this.sellBtnVisibility = true;
+    } else {
+      this.sellBtnVisibility = false;
+    }
   }
 
   ngOnInit(): void {
@@ -100,6 +115,12 @@ export class DetailsComponent implements OnInit {
     this.purchaseAlert
       .pipe(debounceTime(5000))
       .subscribe(() => (this.purchaseMessage = false));
+
+    this.sellAlert.subscribe(() => (this.sellMessage = true));
+
+    this.sellAlert
+      .pipe(debounceTime(5000))
+      .subscribe(() => (this.sellMessage = false));
   }
 
   fetchWatchList() {
@@ -304,6 +325,7 @@ export class DetailsComponent implements OnInit {
       } else {
         this.tickerExist = false;
       }
+      this.setSellBtn();
     });
   }
 

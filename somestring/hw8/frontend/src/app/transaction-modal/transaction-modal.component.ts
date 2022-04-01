@@ -68,6 +68,7 @@ export class TransactionModalComponent implements OnInit {
       
       let x = {
         ticker: this.ticker,
+        name: this.name,
         quantity: this.inputQuantity + (item ? item.quantity : 0),
         totalCost: this.inputQuantity * this.price + (item ? item.totalCost : 0)
       }
@@ -79,6 +80,7 @@ export class TransactionModalComponent implements OnInit {
       
       let x = {
         ticker: this.ticker,
+        name: this.name,
         quantity:  (item ? item.quantity : 0) - this.inputQuantity,
         totalCost: (item ? item.totalCost : 0) - this.inputQuantity * this.price
       }

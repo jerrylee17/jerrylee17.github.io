@@ -19,6 +19,7 @@ import { DetailsComponent } from './details/details.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { TransactionModalComponent } from './transaction-modal/transaction-modal.component';
+import { NewsModalComponent } from './news-modal/news-modal.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { TransactionModalComponent } from './transaction-modal/transaction-modal
     FooterComponent,
     DetailsComponent,
     TransactionModalComponent,
+    NewsModalComponent,
   ],
   imports: [
     BrowserModule,

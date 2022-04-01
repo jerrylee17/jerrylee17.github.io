@@ -40,7 +40,7 @@ export class WatchlistComponent implements OnInit {
       let r: watchList = ({
         ticker: stock.ticker,
         name: stock.name,
-        price: res.change,
+        price: res.price,
         change: res.change,
         percentChange: res.percentChange
       })

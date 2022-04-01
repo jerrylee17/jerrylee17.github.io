@@ -52,13 +52,21 @@
     (closed)="purchaseMessage = false"
     >{{ ticker | uppercase }} bought successfully.</ngb-alert
   >
+  
+  <ngb-alert
+    *ngIf="sellMessage"
+    type="danger"
+    class="text-center"
+    (closed)="purchaseMessage = false"
+    >{{ ticker | uppercase }} sold successfully.</ngb-alert
+  >
 
   <!-- Top info part -->
   <div class="details-header">
     <div class="row pb-5">
       <div class="col">
         <h1>
-          {{ ticker }}
+          {{ companyDescription.ticker }}
           <!-- empty star -->
           <svg
             *ngIf="!watchListed"
@@ -109,6 +117,7 @@
           Buy
         </button>
         <button
+          *ngIf="sellBtnVisibility"
           class="btn btn-primary bg-danger border-0 px-3 py-2"
           (click)="
             openTransaction(

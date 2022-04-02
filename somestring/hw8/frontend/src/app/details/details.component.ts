@@ -16,6 +16,7 @@ import { companyEarnings } from '../interfaces/companyEarnings';
 import { debounceTime, interval, Observable, Subject, timer } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TransactionModalComponent } from '../transaction-modal/transaction-modal.component';
+import { NewsModalComponent } from '../news-modal/news-modal.component';
 indicators(Highcharts);
 vbp(Highcharts);
 
@@ -59,7 +60,6 @@ export class DetailsComponent implements OnInit {
   sellMessage = false;
   sellAlert = new Subject<string>();
   sellBtnVisibility: boolean = false;
-
   apiError: boolean = false;
   updateSummarySub;
 
@@ -68,6 +68,11 @@ export class DetailsComponent implements OnInit {
     private APIService: APIService,
     private route: ActivatedRoute
   ) {}
+
+  openNews(news: companyNews) {
+    const modalRef = this.ModalService.open(NewsModalComponent);
+    modalRef.componentInstance.news = news;
+  }
 
   openTransaction(ticker, name, price, opt) {
     const modalRef = this.ModalService.open(TransactionModalComponent);

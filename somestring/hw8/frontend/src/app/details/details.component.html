@@ -293,7 +293,7 @@
             class="card p-0 my-3 mx-auto col-sm-4 news-card"
             *ngFor="let news of companyNews"
           >
-            <div class="card-body row">
+            <div class="card-body row news-card" (click)="openNews(news)">
               <div class="p-0 my-auto mx-1 col-md-2">
                 <img
                   class="card-img m-0 my-auto"

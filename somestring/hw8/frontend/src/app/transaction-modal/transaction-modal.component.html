@@ -34,7 +34,7 @@
   &nbsp;&nbsp;Current Price: {{ price | number: "1.0-2" }}<br />
   &nbsp;&nbsp;Money in wallet: {{ money | number: "1.2" }}<br />
   &nbsp;&nbsp;Quantity 
-  <input type="number" min="0" [(ngModel)]="inputQuantity" (change)="checkIfValidInput()"/><br />
+  <input (change)="checkIfValidInput()" type="number" min="0" [(ngModel)]="inputQuantity" /><br />
   <p class="text-danger mt-2" *ngIf="noStocks">
     &nbsp;&nbsp;You cannot sell the stocks you don't have!
   </p>
@@ -50,7 +50,6 @@
     type="button"
     [disabled]="!inputQuantity || noStocks || noMoney"
     class="border btn border-0 text-white btn-outline-dark bg-success"
-    (click)="submitOrder()"
   >
     {{ opt.charAt(0).toUpperCase() + opt.slice(1) }}
   </button>

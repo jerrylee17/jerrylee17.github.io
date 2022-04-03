@@ -51,7 +51,10 @@ export class PortfolioComponent implements OnInit {
     modalRef.componentInstance.name = name;
     modalRef.componentInstance.price = price;
     modalRef.componentInstance.opt = opt;
-    modalRef.result.then(() => {
+    modalRef.result.then((res) => {
+      if (!res){
+        return
+      }
       this.ticker = ticker
       if (opt == 'buy') this.purchaseAlert.next('next');
       else this.sellAlert.next('next');

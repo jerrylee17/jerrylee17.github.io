@@ -82,7 +82,11 @@ export class DetailsComponent implements OnInit {
     modalRef.componentInstance.name = name;
     modalRef.componentInstance.price = price;
     modalRef.componentInstance.opt = opt;
-    modalRef.result.then(() => {
+    modalRef.result.then((res) => {
+      if (!res){
+        return
+      }
+      
       if (opt == 'buy') this.purchaseAlert.next('next');
       else this.sellAlert.next('next');
       this.setSellBtn();

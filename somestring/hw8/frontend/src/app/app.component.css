@@ -1,6 +1,6 @@
 .outermost-div {
   margin: 0;
-  /* min-height: 100vh; */
+  min-height: 100vh;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   background-image: linear-gradient(
       rgba(255, 255, 255, 0.8),
@@ -8,6 +8,7 @@
     ),
     url("static/background-graph.jpg");
   background-repeat: no-repeat;
+  background-attachment: fixed;
   background-size: 100vw 100vh;
   overflow-y: scroll;
 }

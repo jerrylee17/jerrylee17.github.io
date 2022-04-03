@@ -15,13 +15,9 @@ export class HomeComponent implements OnInit {
   autocompleteOptions: Autocomplete[] = [];
   stockForm: FormControl = new FormControl();
   isLoading: boolean = false;
-  ticker='';
+  ticker = '';
 
-  constructor(
-    private APIService: APIService,
-    private router: Router
-  ) {
-  }
+  constructor(private APIService: APIService, private router: Router) {}
 
   ngOnInit(): void {
     // this.onRender()
@@ -31,16 +27,19 @@ export class HomeComponent implements OnInit {
         tap(() => (this.isLoading = true))
       )
       .subscribe((autocompleteOptions) => {
-        this.APIService.fetchAutocomplete(autocompleteOptions).subscribe((val) => {
-          this.autocompleteOptions = val;
-          this.isLoading = false;
-        });
+        this.APIService.fetchAutocomplete(autocompleteOptions).subscribe(
+          (val) => {
+            this.autocompleteOptions = val;
+            this.isLoading = false;
+          }
+        );
       });
   }
 
   redirectTo(uri: string) {
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate([uri]));
+    this.router
+      .navigateByUrl('/', { skipLocationChange: true })
+      .then(() => this.router.navigate([uri]));
   }
 
   onSubmit(ticker) {
@@ -48,11 +47,10 @@ export class HomeComponent implements OnInit {
     this.stockForm.reset();
   }
 
-  onRender(){
+  onRender() {
     this.ticker = window.location.href.split('/')[4];
-    
-    this.stockForm.patchValue(this.ticker)
-    
+
+    this.stockForm.patchValue(this.ticker);
   }
 
   onClear() {

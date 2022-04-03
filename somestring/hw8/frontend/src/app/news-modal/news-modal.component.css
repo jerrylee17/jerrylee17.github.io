@@ -1,3 +1,7 @@
 .close-modal-button {
     background-color: transparent !important;
 }
+
+.here-format {
+    cursor: pointer;
+}

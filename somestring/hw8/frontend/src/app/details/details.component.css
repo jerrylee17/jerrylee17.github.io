@@ -59,6 +59,7 @@ strong {
 .peers {
   white-space: pre-line;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .watchlist {

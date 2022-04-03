@@ -1,0 +1,3 @@
+dispatch:
+  - url: "bigstonk.wl.r.appspot.com/*"
+    service: default

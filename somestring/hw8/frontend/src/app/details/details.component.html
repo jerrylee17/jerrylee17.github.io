@@ -272,7 +272,7 @@
             <p class="row">
               <span
                 ><strong>Webpage: </strong>
-                <a class="url-text" href="{{ companyDescription.weburl }}">{{
+                <a class="url-text" href="{{ companyDescription.weburl }}" target="_blank">{{
                   companyDescription.weburl
                 }}</a></span
               >
@@ -281,7 +281,7 @@
               <span>
                 <strong> Company Peers: </strong>
                 <span class="peers" *ngFor="let peer of companyPeers">
-                  <a href="/search/{{ peer }}" class="peers">{{ peer }}, </a>
+                  <a (click)="onPeerClick(peer)" class="peers">{{ peer }}, </a>
                 </span>
               </span>
             </p>

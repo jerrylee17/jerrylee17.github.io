@@ -5,7 +5,7 @@ const axios = require("axios");
 require("dotenv").config();
 
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 8080;
 const API_KEY = process.env.API_KEY;
 
 app.use(bodyParser.json());
@@ -206,6 +206,8 @@ app.get("/getCompanyEarnings", async (req, res) => {
   res.status(200).send(response);
 });
 
-app.listen(port, () => {
-  console.log(`Server listening on the port:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server listening on the port:${PORT}`);
 });
+
+module.exports = app

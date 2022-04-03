@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { APIService } from '../apiFunctions/apiFunctions';
 import { companyDescription } from '../interfaces/companyDescription';
 import { historicalData } from '../interfaces/historicalData';
@@ -67,7 +67,8 @@ export class DetailsComponent implements OnInit {
   constructor(
     private ModalService: NgbModal,
     private APIService: APIService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   openNews(news: companyNews) {
@@ -336,11 +337,6 @@ export class DetailsComponent implements OnInit {
         this.tickerExistError = true;
       }
       this.companyDescription = res;
-      if (this.companyDescription) {
-        this.tickerExist = true;
-      } else {
-        this.tickerExist = false;
-      }
       this.setSellBtn();
     });
   }
@@ -583,6 +579,9 @@ export class DetailsComponent implements OnInit {
           this.apiError = true;
           this.updateSummarySub.unsubscribe();
         }
+        if (this.tickerExistError) {
+          this.updateSummarySub.unsubscribe();
+        }
         this.apiError = false;
 
         this.latestPrice = res;
@@ -635,6 +634,15 @@ export class DetailsComponent implements OnInit {
         this.padDigits(date.getSeconds()),
       ].join(':')
     );
+  }
+
+  onPeerClick(ticker){
+    this.redirectTo(`/search/${ticker.toUpperCase()}`);
+  }
+
+  redirectTo(uri: string) {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate([uri]));
   }
 
   ngOnDestroy() {

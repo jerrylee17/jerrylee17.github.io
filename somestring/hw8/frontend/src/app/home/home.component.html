@@ -16,7 +16,7 @@
         ></mat-option>
         <ng-container *ngIf="!isLoading">
           <mat-option
-            *ngFor="let option of options"
+            *ngFor="let option of autocompleteOptions"
             [value]="option"
             (onSelectionChange)="onSubmit(option.displaySymbol)"
           >

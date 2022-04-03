@@ -12,9 +12,10 @@ import { Autocomplete } from '../interfaces/autocomplete';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  options: Autocomplete[] = [];
+  autocompleteOptions: Autocomplete[] = [];
   stockForm: FormControl = new FormControl();
   isLoading: boolean = false;
+  ticker='';
 
   constructor(
     private APIService: APIService,
@@ -23,15 +24,15 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.stockForm.setValue("aa")
+    // this.onRender()
     this.stockForm.valueChanges
       .pipe(
         debounceTime(300),
         tap(() => (this.isLoading = true))
       )
-      .subscribe((options) => {
-        this.APIService.fetchAutocomplete(options).subscribe((val) => {
-          this.options = val;
+      .subscribe((autocompleteOptions) => {
+        this.APIService.fetchAutocomplete(autocompleteOptions).subscribe((val) => {
+          this.autocompleteOptions = val;
           this.isLoading = false;
         });
       });
@@ -45,6 +46,13 @@ export class HomeComponent implements OnInit {
   onSubmit(ticker) {
     this.redirectTo(`/search/${ticker.toUpperCase()}`);
     this.stockForm.reset();
+  }
+
+  onRender(){
+    this.ticker = window.location.href.split('/')[4];
+    
+    this.stockForm.patchValue(this.ticker)
+    
   }
 
   onClear() {

@@ -10,7 +10,7 @@ import { companySocialSentiment } from '../interfaces/companySocialSentiment';
 import { recommendationTrends } from '../interfaces/recommendationTrends';
 import { companyEarnings } from '../interfaces/companyEarnings';
 
-const HOST = 'http://localhost:3000';
+const HOST = 'https://directed-sonar-346104.wl.r.appspot.com';
 
 @Injectable({
   providedIn: 'root',

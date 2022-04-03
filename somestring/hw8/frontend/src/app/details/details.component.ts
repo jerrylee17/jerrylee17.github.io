@@ -62,6 +62,7 @@ export class DetailsComponent implements OnInit {
   sellBtnVisibility: boolean = false;
   apiError: boolean = false;
   updateSummarySub;
+  tickerExistError: boolean = false;
 
   constructor(
     private ModalService: NgbModal,
@@ -330,7 +331,10 @@ export class DetailsComponent implements OnInit {
   }
 
   fetchCompanyDescription() {
-    this.APIService.fetchCompanyDescription(this.ticker).subscribe((res) => {
+    this.APIService.fetchCompanyDescription(this.ticker).subscribe((res) => {      
+      if (!res.name){
+        this.tickerExistError = true;
+      }
       this.companyDescription = res;
       if (this.companyDescription) {
         this.tickerExist = true;
@@ -562,9 +566,11 @@ export class DetailsComponent implements OnInit {
       (toTimestamp.getTime() / 1000).toFixed(0)
     ).subscribe((res) => {
       this.bigChartData = res;
+
       for (let i = 0; i < this.bigChartData.timestamp.length; i++) {
         this.bigChartData.timestamp[i] *= 1000;
       }
+      
       this.bigChartDone = true;
       this.createBigChart();
     });

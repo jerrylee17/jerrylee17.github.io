@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.stockForm.setValue("aa")
     this.stockForm.valueChanges
       .pipe(
         debounceTime(300),

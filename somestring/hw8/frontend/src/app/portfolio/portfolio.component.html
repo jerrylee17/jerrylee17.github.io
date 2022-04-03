@@ -42,84 +42,99 @@
         </div>
 
         <!-- card body -->
-        <div class="card-body py-2 px-3">
+        <div class="card-body py-2 px-0">
           <div class="card-text row m-0 my-2 px-0 mx-2">
-            <!-- first column -->
-            <!-- <div class="col-sm p-0 m-0"> -->
-            <div class="row">
-              <div class="col m-0 px-1">Quantity:</div>
-              <div class="col mx-3 text-end">
-                {{ stock.quantity | number: "1.0-2" }}
+            <!-- first set of columns -->
+            <div class="col-sm">
+              <!-- first row -->
+              <div class="row">
+                <div class="col m-0 ms-md-3 ms-md-3 px-1">Quantity:</div>
+                <div class="col mx-md-3 text-end">
+                  {{ stock.quantity | number: "1.0-2" }}
+                </div>
               </div>
-              <div class="col m-0 px-1">Change:</div>
-              <div
-                class="col text-end"
-                [class.text-success]="stock.change > 0"
-                [class.text-danger]="stock.change < 0"
-              >
-                <div class="d-flex flex-row-reverse">
+              <!-- second row -->
+              <div class="row">
+                <div class="col m-0 ms-md-3 px-1">Avg. Cost/Share:</div>
+                <div class="col mx-md-3 text-end">
+                  {{ stock.totalCost / stock.quantity | number: "1.0-2" }}
+                </div>
+              </div>
+              <!-- third row -->
+              <div class="row">
+                <div class="col m-0 ms-md-3 px-1">Total Cost:</div>
+                <div class="col mx-md-3 text-end">
+                  {{ stock.totalCost | number: "1.0-2" }}
+                </div>
+              </div>
+            </div>
+            <!-- second set of columns -->
+            <div class="col-sm">
+              <!-- first row -->
+              <div class="row">
+                <div class="col m-0 ms-md-3 px-1">Change:</div>
+                <div
+                  class="col text-end mx-md-3"
+                  [class.text-success]="stock.change > 0"
+                  [class.text-danger]="stock.change < 0"
+                >
                   <div
                     [class.text-success]="stock.change > 0"
                     [class.text-danger]="stock.change < 0"
                   >
+                    <!-- up arrow -->
+                    <svg
+                      *ngIf="stock.change > 0"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="0.7em"
+                      height="0.7em"
+                      fill="green"
+                      class="bi bi-caret-up-fill m-0 my-auto d-none d-md-inline"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"
+                      />
+                    </svg>
+                    <!-- down arrow -->
+                    <svg
+                      *ngIf="stock.change < 0"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="0.7em"
+                      height="0.7em"
+                      fill="red"
+                      class="bi bi-caret-down-fill m-0 my-auto d-none d-md-inline"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+                      />
+                    </svg>
                     {{ stock.change | number: "1.0-2" }}
                   </div>
-                  <svg
-                    *ngIf="stock.change > 0"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="0.8em"
-                    height="0.8em"
-                    fill="green"
-                    class="bi bi-caret-up-fill me-1 my-auto"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"
-                    />
-                  </svg>
-                  <!-- down arrow -->
-                  <svg
-                    *ngIf="stock.change < 0"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="0.8em"
-                    height="0.8em"
-                    fill="red"
-                    class="bi bi-caret-down-fill me-1 my-auto"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
-                    />
-                  </svg>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col m-0 px-1">Avg. Cost/Share:</div>
-              <div class="col mx-3 text-end">
-                {{ stock.totalCost / stock.quantity | number: "1.0-2" }}
+              <!-- second row -->
+              <div class="row">
+                <div class="col m-0 ms-md-3 px-1">Current Price:</div>
+                <div
+                  class="col text-end mx-md-3"
+                  [class.text-success]="stock.change > 0"
+                  [class.text-danger]="stock.change < 0"
+                >
+                  {{ stock.currentPrice | number: "1.0-2" }}
+                </div>
               </div>
-              <div class="col m-0 px-1">Current Price:</div>
-              <div
-                class="col text-end"
-                [class.text-success]="stock.change > 0"
-                [class.text-danger]="stock.change < 0"
-              >
-                {{ stock.currentPrice | number: "1.0-2" }}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col m-0 px-1">Total Cost:</div>
-              <div class="col mx-3 text-end">
-                {{ stock.totalCost | number: "1.0-2" }}
-              </div>
-              <div class="col m-0 px-1">Market Value:</div>
-              <div
-                class="col text-end"
-                [class.text-success]="stock.change > 0"
-                [class.text-danger]="stock.change < 0"
-              >
-                {{ stock.marketValue | number: "1.0-2" }}
+              <!-- third row -->
+              <div class="row">
+                <div class="col m-0 ms-md-3 px-1">Market Value:</div>
+                <div
+                  class="col text-end mx-md-3"
+                  [class.text-success]="stock.change > 0"
+                  [class.text-danger]="stock.change < 0"
+                >
+                  {{ stock.marketValue | number: "1.0-2" }}
+                </div>
               </div>
             </div>
           </div>

@@ -1,24 +1,33 @@
 <ngb-alert
-    *ngIf="apiError"
-    type="danger"
-    class="text-center"
-    [dismissible]="false"
-    >API Rate limit exceeded. Try again later</ngb-alert
-  >
+  *ngIf="apiError"
+  type="danger"
+  class="text-center"
+  [dismissible]="false"
+  >API Rate limit exceeded. Try again later</ngb-alert
+>
+
+<ngb-alert
+  *ngIf="tickerExistError"
+  type="danger"
+  class="text-center"
+  [dismissible]="false"
+  >Stock ticker {{ ticker }} not found</ngb-alert
+>
 
 <app-home></app-home>
 
 <mat-spinner
   *ngIf="
-    !companyDescription ||
-    !ticker ||
-    !latestPrice ||
-    !smallChartDone ||
-    !companyNews ||
-    !bigChartDone ||
-    !recommendationDone ||
-    !socialSentimentDone ||
-    !companyPeersDone
+    (!companyDescription ||
+      !ticker ||
+      !latestPrice ||
+      !smallChartDone ||
+      !companyNews ||
+      !bigChartDone ||
+      !recommendationDone ||
+      !socialSentimentDone ||
+      !companyPeersDone) &&
+    !tickerExistError
   "
   class="mx-auto mt-5"
 >
@@ -35,7 +44,7 @@
     companyPeersDone &&
     !apiError
   "
-  class="details-wrapper container p-5 mb-5"
+  class="details-wrapper container p-sm-5 mb-5 p-3"
 >
   <!-- watchlist alert -->
   <ngb-alert
@@ -61,7 +70,7 @@
     (closed)="purchaseMessage = false"
     >{{ ticker | uppercase }} bought successfully.</ngb-alert
   >
-  
+
   <ngb-alert
     *ngIf="sellMessage"
     type="danger"
@@ -73,7 +82,7 @@
   <!-- Top info part -->
   <div class="details-header">
     <div class="row pb-5">
-      <div class="col">
+      <div class="col-5">
         <h1>
           {{ companyDescription.ticker }}
           <!-- empty star -->
@@ -140,54 +149,58 @@
           Sell
         </button>
       </div>
-      <div class="col d-flex flex-row justify-content-center mt-1 mb-4 mx-3">
+      <div class="col-2 d-flex flex-row justify-content-center mt-1 mx-auto">
         <img class="logo" src="{{ companyDescription.logo }}" />
       </div>
-      <div class="col mr-1 flex-row justify-content-end">
+      <div class="col-5">
         <h1
-          class="d-flex flex-row-reverse"
+          class="text-end"
           [class.text-success]="change > 0"
           [class.text-danger]="change < 0"
         >
           {{ latestPrice.price }}
         </h1>
-        <!-- up arrow -->
-        <h2 class="d-flex flex-row-reverse">
+        <h2 class="text-end">
           <div
             [class.text-success]="change > 0"
             [class.text-danger]="change < 0"
           >
-            {{ latestPrice.change }} ({{ latestPrice.percentChange }}%)
+            <!-- up arrow -->
+            <svg
+              *ngIf="change > 0"
+              xmlns="http://www.w3.org/2000/svg"
+              width="0.7em"
+              height="0.7em"
+              fill="green"
+              class="bi bi-caret-up-fill m-0 my-auto"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"
+              />
+            </svg>
+            <!-- down arrow -->
+            <svg
+              *ngIf="change < 0"
+              xmlns="http://www.w3.org/2000/svg"
+              width="0.7em"
+              height="0.7em"
+              fill="red"
+              class="bi bi-caret-down-fill m-0 my-auto"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
+              />
+            </svg>
+            {{ latestPrice.change | number: "1.2-2" }} ({{
+              latestPrice.percentChange | number: "1.2-2"
+            }}%)
           </div>
-          <svg
-            *ngIf="change > 0"
-            xmlns="http://www.w3.org/2000/svg"
-            width="1em"
-            height="1em"
-            fill="green"
-            class="bi bi-caret-up-fill me-2 my-auto"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"
-            />
-          </svg>
-          <!-- down arrow -->
-          <svg
-            *ngIf="change < 0"
-            xmlns="http://www.w3.org/2000/svg"
-            width="1em"
-            height="1em"
-            fill="red"
-            class="bi bi-caret-down-fill me-2 my-auto"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"
-            />
-          </svg>
         </h2>
-        <h6 class="d-flex flex-row-reverse">{{ currentTimestamp }}</h6>
+        <h6 class="text-end">
+          {{ currentTimestamp }}
+        </h6>
       </div>
     </div>
     <div class="row">
@@ -357,7 +370,7 @@
           </table>
         </div>
         <div class="row mt-2 pb-2">
-          <div class="col px-2 my-3 mx-auto col-md-6 insightsChart">
+          <div class="col px-2 my-3 mx-auto col-sm-6 insightsChart">
             <highcharts-chart
               [Highcharts]="HighCharts"
               [options]="recommendationChartOptions"
@@ -365,7 +378,7 @@
             >
             </highcharts-chart>
           </div>
-          <div class="col px-2 my-3 mx-auto col-md-6 insightsChart">
+          <div class="col px-2 my-3 mx-auto col-sm-6 insightsChart">
             <highcharts-chart
               [Highcharts]="HighCharts"
               [options]="earningChartOptions"

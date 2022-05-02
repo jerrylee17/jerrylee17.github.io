@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="../static/styling.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+        <script src="https://code.highcharts.com/stock/highstock.js"></script>
+        <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+        <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+    </head>
+    <body>
+        <div class="section-3" id="charts">
+            <div id="container"></div>
+        </div>
+    </body>
+    <script>
+        function update_smallchart(e, ticker, change) {
+            let data: Array<any[]> = [];
+            for (let i = 0; i < e.timestamp.length; i++) {
+                data.push([
+                           e.timestamp[i],
+                           e.close[i],
+                           ]);
+            }
+            let color = 'red';
+            if (change < 0) {
+                color = 'red';
+            } else {
+                color = 'green';
+            }
+            // Create the chart
+            Highcharts.stockChart("container", {
+                series: [
+                         {
+                             data: data,
+                             color: color,
+                             showInNavigator: true,
+                             name: ticker.toUpperCase(),
+                             type: 'line',
+                         },
+                         ],
+                         title: { text: `${ticker.toUpperCase()} Hourly Price Variation` },
+                         rangeSelector: {
+                             enabled: false,
+                         },
+                         navigator: {
+                             series: {
+                                 type: 'area',
+                                 color: color,
+                                 fillOpacity: 1,
+                             },
+                         },
+                         xAxis: {
+                             labels: {
+                                 formatter: function () {
+                                     var time = this.value;
+                                     let parsedDate = new Date(time).toTimeString().split(' ')[0];
+                                     parsedDate =
+                                     parsedDate.split(':')[0] + ':' + parsedDate.split(':')[1];
+                                     return parsedDate;
+                                 },
+                             },
+                             tickInterval: 3600 * 1000,
+                         },
+            });
+        }
+        async function api_call(url, ticker, change) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: { stock_name: $("#text").val() },
+                success: function (e) {
+                    update_smallchart(e, ticker, change);
+                },
+            });
+        }
+        function update_charts(e) {
+            // Create the chart
+            Highcharts.stockChart("container", {
+                plotOptions: {
+                    column: {
+                        pointWidth: 4,
+                    },
+                },
+                rangeSelector: {
+                    buttons: [
+                              {
+                                  type: "day",
+                                  count: 7,
+                                  text: "7d",
+                              },
+                              {
+                                  type: "day",
+                                  count: 15,
+                                  text: "15d",
+                              },
+                              {
+                                  type: "month",
+                                  count: 1,
+                                  text: "1m",
+                              },
+                              {
+                                  type: "month",
+                                  count: 3,
+                                  text: "3m",
+                              },
+                              {
+                                  type: "month",
+                                  count: 6,
+                                  text: "6m",
+                              },
+                              ],
+                              selected: 0,
+                              inputEnabled: false,
+                },
+                
+                title: {
+                    text: e.title,
+                },
+                
+                subtitle: {
+                    text: "<a href='https://finnhub.io/' style='text-decoration: underline' target='_blank'> Source: Finnhub </a>",
+                },
+                
+                yAxis: [
+                        {
+                            opposite: false,
+                            labels: {
+                                align: "right",
+                                x: -10,
+                            },
+                            title: {
+                                text: "Stock Price",
+                            },
+                            resize: {
+                                enabled: true,
+                            },
+                        },
+                        {
+                            opposite: true,
+                            labels: {
+                                align: "left",
+                                x: 10,
+                            },
+                            title: {
+                                text: "Volume",
+                            },
+                        },
+                        ],
+                        
+                        series: [
+                                 {
+                                     name: "Stock Price",
+                                     data: e.price_date,
+                                     type: "area",
+                                     threshold: null,
+                                     tooltip: {
+                                         valueDecimals: 2,
+                                     },
+                                     fillColor: {
+                                         linearGradient: {
+                                             x1: 0,
+                                             y1: 0,
+                                             x2: 0,
+                                             y2: 1,
+                                         },
+                                         stops: [
+                                                 [0, Highcharts.getOptions().colors[0]],
+                                                 [
+                                                  1,
+                                                  Highcharts.color(Highcharts.getOptions().colors[0])
+                                                  .setOpacity(0)
+                                                  .get("rgba"),
+                                                  ],
+                                                 ],
+                                     },
+                                 },
+                                 {
+                                     type: "column",
+                                     name: "Volume",
+                                     data: e.volume_date,
+                                     yAxis: 1,
+                                 },
+                                 ],
+            });
+        }
+    </script>
+</html>

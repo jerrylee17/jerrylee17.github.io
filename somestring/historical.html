@@ -32,35 +32,26 @@
             // Create the chart
             Highcharts.stockChart("container", {
                 series: [
-                  {
-                    data: data,
-                    color: color,
-                    showInNavigator: true,
-                    name: ticker.toUpperCase(),
-                    type: 'line',
-                  },
-                ],
-                title: { text: `${ticker.toUpperCase()} Hourly Price Variation` },
-                rangeSelector: {
-                  enabled: false,
-                },
-                navigator: {
-                    enabled: false
-                },
-                xAxis: {
-                  labels: {
-                    formatter: function () {
-                      var time = this.value;
-                      let parsedDate = new Date(time).toTimeString().split(' ')[0];
-                      parsedDate =
-                        parsedDate.split(':')[0] + ':' + parsedDate.split(':')[1];
-                      return parsedDate;
-                    },
-                  },
-                  tickInterval: 3600 * 1000,
-                },
-              }
-            );
+                         {
+                             data: data,
+                             color: color,
+                             showInNavigator: true,
+                             name: ticker.toUpperCase(),
+                             type: 'line',
+                         },
+                         ],
+                         title: { text: `${ticker.toUpperCase()} Hourly Price Variation` },
+                         rangeSelector: {
+                             enabled: false,
+                         },
+                         navigator: {
+                             series: {
+                                 type: 'area',
+                                 color: color,
+                                 fillOpacity: 1,
+                             },
+                         },
+            });
         }
         async function api_call(url, ticker, change) {
             $.ajax({

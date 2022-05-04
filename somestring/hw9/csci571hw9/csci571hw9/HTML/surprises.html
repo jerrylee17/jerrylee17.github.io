@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+        <script src="https://code.highcharts.com/stock/highstock.js"></script>
+        <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+        <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, viewport-fit=cover">
+    </head>
+    <body>
+        <div class="section-3" id="charts">
+            <div id="container"></div>
+        </div>
+    </body>
+    <script>
+        let url = "https://directed-sonar-346104.wl.r.appspot.com/getCompanyEarnings?ticker=AAPL"
+        let ticker="AAPL"
+        api_call(url, ticker)
+        function update_chart(e, ticker) {
+            
+            let xLabels = e.map(
+                (x) => [x.period, x.surprise]
+              )
+              console.log(xLabels)
+            
+            // Create the chart
+            Highcharts.stockChart("container", {
+                chart: {
+                  type: 'spline',
+                },
+                rangeSelector: {
+                    enabled: false
+                },
+                navigator: {
+                    enabled: false
+                },
+                title: {
+                  text: 'Historical EPS Surprises',
+                },
+                xAxis: {
+                    labels: {
+                        rotation: -45,
+                        formatter: function(){
+                            return xLabels[this.value][0] + "<br />" + "Surprise: " + xLabels[this.value][1]
+                        }
+                    }
+                },
+                yAxis: {
+                  opposite: false,
+                  title: {
+                      margin: 10,
+                    text: 'Quarterly EPS',
+                  },
+                },
+                legend: {
+                  enabled: true,
+                },
+                series: [
+                  {
+                    name: 'Actual',
+                    data: e.map((x) => x.actual || 0),
+                    type: 'spline',
+                  },
+                  {
+                    name: 'Estimate',
+                    data: e.map((x) => x.estimate || 0),
+                    type: 'spline',
+                  },
+                ],
+              });
+        }
+        async function api_call(url, ticker) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: { stock_name: $("#text").val() },
+                success: function (e) {
+                    update_chart(e, ticker);
+                },
+            });
+        }
+    </script>
+</html>

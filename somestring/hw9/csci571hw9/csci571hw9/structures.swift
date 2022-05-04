@@ -91,9 +91,6 @@ struct CompanyEarnings: Hashable, Codable {
 struct PortfolioStruct: Hashable, Codable {
     var ticker: String;
     var shares: Int;
-    var price: Float;
-    var change: Float;
-    var percentChange: Float;
 }
 
 struct FavoritesStruct: Hashable, Codable {

@@ -9,8 +9,17 @@
 /* Begin PBXBuildFile section */
 		EA1D758C281DF5D60054BC35 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = EA1D758B281DF5D60054BC35 /* Alamofire */; };
 		EA1D758E281DFB080054BC35 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D758D281DFB080054BC35 /* Debouncer.swift */; };
-		EA1D7590281F282F0054BC35 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D758F281F282F0054BC35 /* News.swift */; };
+		EA2462042820F3CD00194B3A /* WebRecommendation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2462032820F3CD00194B3A /* WebRecommendation.swift */; };
+		EA2462062821063D00194B3A /* WebSurprises.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2462052821063D00194B3A /* WebSurprises.swift */; };
+		EA24620828222D7A00194B3A /* FavoriteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA24620728222D7A00194B3A /* FavoriteService.swift */; };
+		EA24620A282231C700194B3A /* PortfolioService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA246209282231C700194B3A /* PortfolioService.swift */; };
 		EA39FCDB281FA87A00D8EC49 /* hourly.html in Resources */ = {isa = PBXBuildFile; fileRef = EA39FCDA281FA87A00D8EC49 /* hourly.html */; };
+		EA39FCDE2820794500D8EC49 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA39FCDD2820794500D8EC49 /* Toast.swift */; };
+		EA39FCE02820B7B200D8EC49 /* WebHourly.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA39FCDF2820B7B200D8EC49 /* WebHourly.swift */; };
+		EA39FCE62820E36200D8EC49 /* historical.html in Resources */ = {isa = PBXBuildFile; fileRef = EA39FCE52820E36200D8EC49 /* historical.html */; };
+		EA39FCE92820E3AE00D8EC49 /* recommendation.html in Resources */ = {isa = PBXBuildFile; fileRef = EA39FCE72820E3AE00D8EC49 /* recommendation.html */; };
+		EA39FCEA2820E3AE00D8EC49 /* surprises.html in Resources */ = {isa = PBXBuildFile; fileRef = EA39FCE82820E3AE00D8EC49 /* surprises.html */; };
+		EA39FCED2820E4B100D8EC49 /* WebHistorical.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA39FCEC2820E4B100D8EC49 /* WebHistorical.swift */; };
 		EA47EF79280FB3000019BC16 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = EA47EF78280FB3000019BC16 /* Kingfisher */; };
 		EA7579FE2806565E0002AA35 /* structures.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7579FD2806565E0002AA35 /* structures.swift */; };
 		EA757A00280FA27B0002AA35 /* StockDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7579FF280FA27B0002AA35 /* StockDetails.swift */; };
@@ -28,8 +37,17 @@
 
 /* Begin PBXFileReference section */
 		EA1D758D281DFB080054BC35 /* Debouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
-		EA1D758F281F282F0054BC35 /* News.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
+		EA2462032820F3CD00194B3A /* WebRecommendation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRecommendation.swift; sourceTree = "<group>"; };
+		EA2462052821063D00194B3A /* WebSurprises.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSurprises.swift; sourceTree = "<group>"; };
+		EA24620728222D7A00194B3A /* FavoriteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteService.swift; sourceTree = "<group>"; };
+		EA246209282231C700194B3A /* PortfolioService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioService.swift; sourceTree = "<group>"; };
 		EA39FCDA281FA87A00D8EC49 /* hourly.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = hourly.html; sourceTree = "<group>"; };
+		EA39FCDD2820794500D8EC49 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		EA39FCDF2820B7B200D8EC49 /* WebHourly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebHourly.swift; sourceTree = "<group>"; };
+		EA39FCE52820E36200D8EC49 /* historical.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = historical.html; sourceTree = "<group>"; };
+		EA39FCE72820E3AE00D8EC49 /* recommendation.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = recommendation.html; sourceTree = "<group>"; };
+		EA39FCE82820E3AE00D8EC49 /* surprises.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = surprises.html; sourceTree = "<group>"; };
+		EA39FCEC2820E4B100D8EC49 /* WebHistorical.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebHistorical.swift; sourceTree = "<group>"; };
 		EA4B27A4280290C900EEB7D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		EA7579FD2806565E0002AA35 /* structures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = structures.swift; sourceTree = "<group>"; };
 		EA7579FF280FA27B0002AA35 /* StockDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockDetails.swift; sourceTree = "<group>"; };
@@ -63,6 +81,9 @@
 			isa = PBXGroup;
 			children = (
 				EA39FCDA281FA87A00D8EC49 /* hourly.html */,
+				EA39FCE52820E36200D8EC49 /* historical.html */,
+				EA39FCE72820E3AE00D8EC49 /* recommendation.html */,
+				EA39FCE82820E3AE00D8EC49 /* surprises.html */,
 			);
 			path = HTML;
 			sourceTree = "<group>";
@@ -95,9 +116,15 @@
 				EA81BBA2281DEE3B00CAE6B8 /* SearchBar.swift */,
 				EA81BBA4281DEF5500CAE6B8 /* ViewControllerResolver.swift */,
 				EA7579FF280FA27B0002AA35 /* StockDetails.swift */,
-				EA1D758F281F282F0054BC35 /* News.swift */,
+				EA39FCDF2820B7B200D8EC49 /* WebHourly.swift */,
+				EA39FCEC2820E4B100D8EC49 /* WebHistorical.swift */,
+				EA2462032820F3CD00194B3A /* WebRecommendation.swift */,
+				EA2462052821063D00194B3A /* WebSurprises.swift */,
+				EA39FCDD2820794500D8EC49 /* Toast.swift */,
 				EA7579FD2806565E0002AA35 /* structures.swift */,
 				EA81BBA0281DC17B00CAE6B8 /* APIFunctions.swift */,
+				EA24620728222D7A00194B3A /* FavoriteService.swift */,
+				EA246209282231C700194B3A /* PortfolioService.swift */,
 				EAEE5BEA27FD25F10062FE79 /* Assets.xcassets */,
 				EAEE5BEF27FD25F10062FE79 /* Persistence.swift */,
 				EAEE5BF127FD25F10062FE79 /* csci571hw9.xcdatamodeld */,
@@ -180,9 +207,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA39FCEA2820E3AE00D8EC49 /* surprises.html in Resources */,
 				EAEE5BEE27FD25F10062FE79 /* Preview Assets.xcassets in Resources */,
+				EA39FCE92820E3AE00D8EC49 /* recommendation.html in Resources */,
 				EA39FCDB281FA87A00D8EC49 /* hourly.html in Resources */,
 				EAEE5BFA27FD4CEE0062FE79 /* images in Resources */,
+				EA39FCE62820E36200D8EC49 /* historical.html in Resources */,
 				EAEE5BEB27FD25F10062FE79 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -195,16 +225,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA7579FE2806565E0002AA35 /* structures.swift in Sources */,
+				EA24620828222D7A00194B3A /* FavoriteService.swift in Sources */,
+				EA39FCED2820E4B100D8EC49 /* WebHistorical.swift in Sources */,
+				EA39FCDE2820794500D8EC49 /* Toast.swift in Sources */,
 				EAEE5BF027FD25F10062FE79 /* Persistence.swift in Sources */,
+				EA39FCE02820B7B200D8EC49 /* WebHourly.swift in Sources */,
+				EA2462062821063D00194B3A /* WebSurprises.swift in Sources */,
 				EA81BBA1281DC17B00CAE6B8 /* APIFunctions.swift in Sources */,
 				EA1D758E281DFB080054BC35 /* Debouncer.swift in Sources */,
 				EAEE5BE927FD25F00062FE79 /* ContentView.swift in Sources */,
 				EA81BBA5281DEF5500CAE6B8 /* ViewControllerResolver.swift in Sources */,
-				EA1D7590281F282F0054BC35 /* News.swift in Sources */,
 				EA757A00280FA27B0002AA35 /* StockDetails.swift in Sources */,
 				EA81BBA3281DEE3B00CAE6B8 /* SearchBar.swift in Sources */,
 				EAEE5BF327FD25F10062FE79 /* csci571hw9.xcdatamodeld in Sources */,
+				EA24620A282231C700194B3A /* PortfolioService.swift in Sources */,
 				EAEE5BE727FD25F00062FE79 /* csci571hw9App.swift in Sources */,
+				EA2462042820F3CD00194B3A /* WebRecommendation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

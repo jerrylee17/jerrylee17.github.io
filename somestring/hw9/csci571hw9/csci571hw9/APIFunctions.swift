@@ -116,5 +116,4 @@ class APIFunctions: ObservableObject {
             self.companyPeers = filteredRes
         }
     }
-    
 }

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+        <script src="https://code.highcharts.com/stock/highstock.js"></script>
+        <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+        <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, viewport-fit=cover">
+    </head>
+    <body>
+        <div class="section-3" id="charts">
+            <div id="container"></div>
+        </div>
+    </body>
+    <script>
+        //let url = "https://directed-sonar-346104.wl.r.appspot.com/getCompanyRecommendationTrends?ticker=AAPL"
+        //let ticker="AAPL"
+        //api_call(url, ticker)
+        function update_chart(e, ticker) {
+            let periods = []
+            for (let i = 0; i < e.length; i++){
+                periods.push(e[i].period.slice(0, 7))
+            }
+            // Create the chart
+            Highcharts.stockChart("container", {
+                legend: {
+                    enabled: true
+                },
+                rangeSelector: {
+                    enabled: false
+                },
+                navigator: {
+                    enabled: false
+                },
+                chart: {
+                  type: 'column',
+                },
+                title: {
+                  text: 'Recommendation Trends',
+                },
+                xAxis: {
+                    labels: {
+                        formatter: function(){
+                            return periods[this.value]
+                        }
+                    }
+                },
+                yAxis: {
+                  min: 0,
+                  opposite: false,
+                  title: {
+                      margin: 10,
+                    text: '#analysis',
+                    align: 'high',
+                  },
+                },
+                credits: {
+                  enabled: false,
+                },
+                plotOptions: {
+                  column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                      enabled: true,
+                    },
+                  },
+                },
+                series: [
+                  {
+                    name: 'Strong Buy',
+                    data: e.map((x) => x.strongBuy),
+                    showInLegend: true,
+                    type: 'column',
+                    color: '#1c6d37',
+                  },
+                  {
+                    name: 'Buy',
+                    data: e.map((x) => x.buy),
+                    showInLegend: true,
+                    type: 'column',
+                    color: '#19aa4d',
+                  },
+                  {
+                    name: 'Hold',
+                    data: e.map((x) => x.hold),
+                    showInLegend: true,
+                    type: 'column',
+                    color: '#9f7719',
+                  },
+                  {
+                    name: 'Sell',
+                    data: e.map((x) => x.sell),
+                    showInLegend: true,
+                    type: 'column',
+                    color: '#c2484b',
+                  },
+                  {
+                    name: 'Strong Sell',
+                    data: e.map((x) => x.strongSell),
+                    showInLegend: true,
+                    type: 'column',
+                    color: '#602426',
+                  },
+                ],
+              });
+        }
+        async function api_call(url, ticker) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: { stock_name: $("#text").val() },
+                success: function (e) {
+                    update_chart(e, ticker);
+                },
+            });
+        }
+    </script>
+</html>

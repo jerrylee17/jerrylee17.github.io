@@ -186,6 +186,7 @@ struct FavoriteCell: View {
     @StateObject var apiFunctions = APIFunctions()
     @Binding var favoriteLoaded: Bool
     
+    
     var body: some View {
         HStack {
             if (apiFunctions.companyDescription == nil || apiFunctions.latestPrice == nil){
@@ -194,6 +195,10 @@ struct FavoriteCell: View {
                     ProgressView()
                     Spacer()
                 }.onAppear{
+                    var timer: Timer?
+                    timer =  Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { (timer) in
+                        apiFunctions.fetchLatestPrice(ticker: stock)
+                    }
                     apiFunctions.fetchLatestPrice(ticker: stock)
                     apiFunctions.fetchCompanyDescription(ticker: stock)
                 }
@@ -248,6 +253,11 @@ struct StockCell: View {
                 ProgressView()
                 Spacer()
             }.onAppear{
+                var timer: Timer?
+                timer =  Timer.scheduledTimer(withTimeInterval: 15.0, repeats: true) { (timer) in
+                    print("Here")
+                    apiFunctions.fetchLatestPrice(ticker: stock.ticker)
+                }
                 apiFunctions.fetchLatestPrice(ticker: stock.ticker)
             }
         }
